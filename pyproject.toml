@@ -1,0 +1,18 @@
+[build-system]
+requires = ['setuptools>=42', 'wheel']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'tilda'
+version = '0.0.1'
+description = 'The AI CLI'
+requires-python = '>=3.12.2'
+authors = [{ name = 'rkyd' }]
+readme = 'README.md'
+license = { file = 'LICENSE' }
+dependencies = [
+    'argparse==1.4.0',
+    'logging==0.4.9.6'
+]
+scripts = { 'tilda' = 'src.tilda:main' }
+
