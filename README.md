@@ -5,8 +5,7 @@ tilda is a command-line interface based on AI for managing system and developmen
 
 ## Features
 
-- **Manager Command**: Run tasks related to system management.
-- **Terminal Command**: Execute specific commands directly in the terminal with optional permissive settings.
+- **Terminal Command**: Get that terminal command you were looking for.
 
 ## Installation
 
