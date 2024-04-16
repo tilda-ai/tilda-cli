@@ -40,7 +40,7 @@ tilda terminal "say hello"
 
 ## Usage
 
-After installation, the tool can be run from the command line. Here are some examples of how you can use the Tilda CLI Tool:
+After installation, the tool can be run from the command line.
 
 ### Running the Terminal Agent
 
