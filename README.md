@@ -26,13 +26,13 @@ cd tilda
 uv venv 
 source .venv/bin/activate
 
-\# build the package from source
+# build the package from source
 python3 setup.py sdist bdist_wheel
 
-\# exit venv
+# exit venv
 deactivate
 
-\# install the tilda package on your machine
+# install the tilda package on your machine
 pipx install . --upgrade
 
 tilda terminal "say hello"
