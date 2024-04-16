@@ -18,7 +18,7 @@ Install uv or use pip3 [astral/uv](https://github.com/astral-sh/uv)
 Install pipx for the global installation of ~tilda on your machine [pypa/pipx](https://github.com/pypa/pipx)
 
 
-```bash
+```shell
 git clone https://github.com/tilda/tilda.git
 cd tilda
 uv venv 
@@ -44,13 +44,13 @@ After installation, the tool can be run from the command line. Here are some exa
 
 To run the terminal agent:
 
-```bash
+```shell
 tilda terminal "Say Hello, World!"
 ```
 
 To run the terminal command with permissive execution settings:
 
-```bash
+```shell
 terminal --careless "rm -rf /example"
 ```
 
