@@ -15,16 +15,22 @@ The tool has been tested with Python 3.12.2.
 
 For now you can install it directly from source by cloning the repository.
 
-1. Install uv or use pip3 [astral/uv](https://github.com/astral-sh/uv)
+1. Install uv or use [pip3](https://github.com/astral-sh/uv)
 
-2. Install pipx for the global installation of ~tilda on your machine [pypa/pipx](https://github.com/pypa/pipx)
+2. Install [pipx](https://github.com/pypa/pipx) for the global installation of ~tilda on your machine 
 
 
 ```shell
+# clone the repo
 git clone https://github.com/tilda/tilda.git
 cd tilda
+
+# create virtual env
 uv venv 
 source .venv/bin/activate
+
+# install dependencies
+uv pip install -r requirements.txt
 
 # build the package from source
 python3 setup.py sdist bdist_wheel
