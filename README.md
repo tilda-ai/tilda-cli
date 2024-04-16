@@ -14,7 +14,7 @@ The tool has been tested with Python 3.12.2.
 
 For now you can install it directly from source by cloning the repository.
 
-Install uv or use pip [astral/uv](https://github.com/astral-sh/uv)
+Install uv or use pip3 [astral/uv](https://github.com/astral-sh/uv)
 Install pipx for the global installation of ~tilda on your machine [pypa/pipx](https://github.com/pypa/pipx)
 
 
@@ -58,7 +58,7 @@ terminal --careless "rm -rf /example"
 
 ## Contributing
 
-Contributions to the Tilda CLI Tool are welcome! Please feel free to fork the repository, make changes, and submit pull requests. You can also open issues if you find bugs or have feature requests.
+Contributions to ~tilda are welcome and encouraged! Please feel free to clone the repository, make changes, and submit pull requests. You can also open issues if you find bugs or have feature requests.
 
 ## License
 
