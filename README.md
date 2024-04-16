@@ -55,7 +55,7 @@ tilda terminal "Say Hello, World!"
 echo "Hello, World!"
 ```
 
-To run the terminal command with scoped execution context (in natural language):
+To run the terminal agent with scoped execution context (in natural language):
 
 ```shell
 terminal "rebuild packages with node v21" --scope "packages: types, common, shell-core"
