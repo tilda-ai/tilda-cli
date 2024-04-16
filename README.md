@@ -15,9 +15,9 @@ The tool has been tested with Python 3.12.2.
 
 For now you can install it directly from source by cloning the repository.
 
-1. Install uv or use [pip3](https://github.com/astral-sh/uv)
+1. Install [uv](https://github.com/astral-sh/uv) or use pip3.
 
-2. Install [pipx](https://github.com/pypa/pipx) for the global installation of ~tilda on your machine 
+2. Install [pipx](https://github.com/pypa/pipx) for the global installation of ~tilda on your machine.
 
 
 ```shell
@@ -69,7 +69,9 @@ terminal "rebuild packages with node v21" --scope "packages: types, common, shel
 
 ## Contributing
 
-Contributions to ~tilda are welcome and encouraged! Please feel free to clone the repository, make changes, and submit pull requests. You can also open issues if you find bugs or have feature requests.
+Contributions to ~tilda are welcome and encouraged! 
+
+Please feel free to clone the repository, make changes, and submit pull requests. You can also open issues if you find bugs or have feature requests.
 
 ## License
 
