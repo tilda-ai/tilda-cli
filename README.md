@@ -1,7 +1,7 @@
 
 # ~tilda
 
-~tilda is a command-line interface based on AI for managing system and development tasks. This tool is designed to simplify common administrative tasks and can be customized for specific workflows.
+tilda is a command-line interface based on AI for managing system and development tasks. This tool is designed to simplify common administrative tasks and can be customized for specific workflows.
 
 ## Features
 
@@ -12,7 +12,7 @@
 
 To use the Tilda CLI Tool, you need Python installed on your system. The tool has been tested with Python 3.12.2. You can install it directly by cloning the repository and using it as a module.
 
-\```bash
+```bash
 git clone https://github.com/tilda/tilda.git
 cd tilda
 uv venv
@@ -28,7 +28,7 @@ deactivate
 pipx install . --upgrade
 
 tilda terminal "say hello"
-\```
+```
 
 ## Usage
 
@@ -38,15 +38,15 @@ After installation, the tool can be run from the command line. Here are some exa
 
 To run the terminal agent:
 
-\```bash
+```bash
 tilda terminal "Say Hello, World!"
-\```
+```
 
 To run the terminal command with permissive execution settings:
 
-\```bash
+```bash
 terminal --careless "rm -rf /example"
-\```
+```
 
 **Warning:** Use the `--careless` flag with caution, especially when performing operations that can modify or delete data.
 
