@@ -1,7 +1,7 @@
 
 # ~tilda
 
-tilda is a command-line interface based on AI for managing system and development tasks. This tool is designed to simplify common administrative tasks and can be customized for specific workflows.
+A command-line interface based on AI for automating software development, from single actions and steps to complete processes.
 
 ## Features
 
@@ -9,12 +9,19 @@ tilda is a command-line interface based on AI for managing system and developmen
 
 ## Installation
 
-To use the Tilda CLI Tool, you need Python installed on your system. The tool has been tested with Python 3.12.2. You can install it directly by cloning the repository and using it as a module.
+To use the Tilda CLI Tool, you need Python installed on your system.
+The tool has been tested with Python 3.12.2.
+
+For now you can install it directly from source by cloning the repository.
+
+Install uv or use pip [astral/uv](https://github.com/astral-sh/uv)
+Install pipx for the global installation of ~tilda on your machine [pypa/pipx](https://github.com/pypa/pipx)
+
 
 ```bash
 git clone https://github.com/tilda/tilda.git
 cd tilda
-uv venv
+uv venv 
 source .venv/bin/activate
 
 \# build the package from source
