@@ -5,7 +5,7 @@ A command-line interface based on AI for automating software development, from s
 
 ## Features
 
-- **Terminal Command**: Get that terminal command you were looking for.
+- **Terminal Agent**: Gets that terminal command you were looking for.
 
 ## Installation
 
@@ -38,6 +38,7 @@ pipx install . --upgrade
 tilda terminal "say hello"
 ```
 
+
 ## Usage
 
 After installation, the tool can be run from the command line.
@@ -46,17 +47,19 @@ After installation, the tool can be run from the command line.
 
 To run the terminal agent:
 
+
 ```shell
 tilda terminal "Say Hello, World!"
+
+# executed command
+echo "Hello, World!"
 ```
 
-To run the terminal command with permissive execution settings:
+To run the terminal command with scoped execution context (in natural language):
 
 ```shell
-terminal --careless "rm -rf /example"
+terminal "rebuild packages with node v21" --scope "packages: types, common, shell-core"
 ```
-
-**Warning:** Use the `--careless` flag with caution, especially when performing operations that can modify or delete data.
 
 ## Contributing
 
