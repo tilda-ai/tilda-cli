@@ -1,5 +1,5 @@
 # Define command configurations in a structured way for extensibility
-from ..agents import run_terminal_agent
+from src.agents import run_terminal_agent
 
 commands = {
     'terminal': {
