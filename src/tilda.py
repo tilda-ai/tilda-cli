@@ -1,10 +1,15 @@
-# src/tilda.py
-
 import argparse
 import sys
 import logging
 
-from src.config import commands
+from src.commands import commands
+
+#TODO: add to prompt last few commands
+#TODO: parse file imports to get all relevant code
+#TODO: prase last file inserts
+#TODO: look for usages of relevant code
+#TODO: add init command
+#TODO: add threading
 
 def configure_parser():
     """Configure and return the main argument parser with subparsers for commands."""
@@ -34,5 +39,6 @@ def main():
         logging.error("Unknown command")
         sys.exit(1)
 
+#TODO: try to remove this
 if __name__ == '__main__':
     main()

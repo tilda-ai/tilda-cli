@@ -74,9 +74,9 @@ class LLM:
         # agentState.update_token_usage(project_name, token_usage)
         pass
 
-    def inference(self, prompt: str, project_name: str) -> str:
+    def inference(self, prompt: str) -> str:
         # Update global token usage
-        self.update_global_token_usage(prompt, project_name)
+        self.update_global_token_usage(prompt)
         # Get the model enum from the model id
         model_enum = self.model_id_to_enum_mapping().get(self.model_id)
         
@@ -103,6 +103,6 @@ class LLM:
         if self.log_prompts:
             logging.debug(f"Response ({model}): --> {response}")
 
-        self.update_global_token_usage(response, project_name)
+        self.update_global_token_usage(response)
 
         return response
