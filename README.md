@@ -9,7 +9,7 @@ A command-line interface based on AI for automating software development, from s
 
 ## Installation
 
-To use the ~tilda CLI, you need Python >=3.12 installed on your system.
+To install the CLI, you need Python >=3.12 installed on your system.
 
 For now, to run tilda locally from your command line, you can install it directly from source by cloning the repository.
 
@@ -31,9 +31,9 @@ source .venv/bin/activate
 uv pip install -r requirements.txt
 
 # build the package from source
-python3 setup.py sdist bdist_wheel
+python3 -m build
 
-# exit venv
+# deactivate venv (or run the next command in a new terminal)
 deactivate
 
 # install the tilda package on your machine
@@ -67,7 +67,7 @@ terminal "rebuild packages with node v21" --scope "packages: types, common, shel
 
 ## Contributing
 
-Contributions to ~tilda are welcome and encouraged! 
+Contributions to tilda are welcome and encouraged! 
 
 Please feel free to clone the repository, make changes, and submit pull requests. You can also open issues if you find bugs or have feature requests.
 
