@@ -2,7 +2,6 @@ import toml
 import os
 import tiktoken
 
-
 class Config:
     _instance = None
 
@@ -14,159 +13,46 @@ class Config:
 
     def _load_config(self):
         # If the config file doesn't exist, copy from the sample
-        if not os.path.exists("config.toml"):
-            with open("sample.config.toml", "r") as f_in, open("config.toml", "w") as f_out:
+        if not os.path.exists("tilda.toml"):
+            with open("sample.tilda.toml", "r") as f_in, open("tilda.toml", "w") as f_out:
                 f_out.write(f_in.read())
 
-        self.config = toml.load("config.toml")
+        self.config = toml.load("tilda.toml")
 
     def get_config(self):
         return self.config
     
-    def get_tokenizer(self):
-        return tiktoken.get_encoding(self.config["LLM_CONFIG"]["TOKEN_ENCODING"])
-
-
-    def get_bing_api_endpoint(self):
-        return self.config["API_ENDPOINTS"]["BING"]
-
-    def get_bing_api_key(self):
-        return self.config["API_KEYS"]["BING"]
-    
-    def get_google_search_api_key(self):
-        return self.config["API_KEYS"]["GOOGLE_SEARCH"]
-
-    def get_google_search_engine_id(self):
-        return self.config["API_KEYS"]["GOOGLE_SEARCH_ENGINE_ID"]
-
-    def get_google_search_api_endpoint(self):
-        return self.config["API_ENDPOINTS"]["GOOGLE"]
-    
     def get_ollama_api_endpoint(self):
-        return self.config["API_ENDPOINTS"]["OLLAMA"]
+        return self.config["api_endpoints"]["ollama"]
 
     def get_claude_api_key(self):
-        return self.config["API_KEYS"]["CLAUDE"]
+        return self.config["api_keys"]["claude_api_key"]
 
     def get_openai_api_key(self):
-        return self.config["API_KEYS"]["OPENAI"]
+        return self.config["api_keys"]["open_ai_api_key"]
 
     def get_gemini_api_key(self):
-        return self.config["API_KEYS"]["GEMINI"]
+        return self.config["api_keys"]["gemini_api_key"]
 
     def get_mistral_api_key(self):
-        return self.config["API_KEYS"]["MISTRAL"]
+        return self.config["api_keys"]["mistral_api_key"]
 
     def get_groq_api_key(self):
-        return self.config["API_KEYS"]["GROQ"]
-
-    def get_netlify_api_key(self):
-        return self.config["API_KEYS"]["NETLIFY"]
+        return self.config["api_keys"]["groq_api_key"]
 
     def get_sqlite_db(self):
-        return self.config["STORAGE"]["SQLITE_DB"]
+        return self.config["storage"]["sqlite_db"]
 
-    def get_screenshots_dir(self):
-        return self.config["STORAGE"]["SCREENSHOTS_DIR"]
-
-    def get_pdfs_dir(self):
-        return self.config["STORAGE"]["PDFS_DIR"]
-
-    def get_projects_dir(self):
-        return self.config["STORAGE"]["PROJECTS_DIR"]
-
-    def get_logs_dir(self):
-        return self.config["STORAGE"]["LOGS_DIR"]
-
-    def get_repos_dir(self):
-        return self.config["STORAGE"]["REPOS_DIR"]
-
-    def get_logging_rest_api(self):
-        return self.config["LOGGING"]["LOG_REST_API"] == "true"
-
-    def get_logging_prompts(self):
-        return self.config["LOGGING"]["LOG_PROMPTS"] == "true"
-
-    def set_bing_api_key(self, key):
-        self.config["API_KEYS"]["BING"] = key
-        self.save_config()
-
-    def set_bing_api_endpoint(self, endpoint):
-        self.config["API_ENDPOINTS"]["BING"] = endpoint
-        self.save_config()
-
-    def set_google_search_api_key(self, key):
-        self.config["API_KEYS"]["GOOGLE_SEARCH"] = key
-        self.save_config()
-
-    def set_google_search_engine_id(self, key):
-        self.config["API_KEYS"]["GOOGLE_SEARCH_ENGINE_ID"] = key
-        self.save_config()
-
-    def set_google_search_api_endpoint(self, endpoint):
-        self.config["API_ENDPOINTS"]["GOOGLE_SEARCH"] = endpoint
-        self.save_config()
-
-    def set_ollama_api_endpoint(self, endpoint):
-        self.config["API_ENDPOINTS"]["OLLAMA"] = endpoint
-        self.save_config()
-
-    def set_claude_api_key(self, key):
-        self.config["API_KEYS"]["CLAUDE"] = key
-        self.save_config()
-
-    def set_openai_api_key(self, key):
-        self.config["API_KEYS"]["OPENAI"] = key
-        self.save_config()
-
-    def set_gemini_api_key(self, key):
-        self.config["API_KEYS"]["GEMINI"] = key
-        self.save_config()
-
-    def set_mistral_api_key(self, key):
-        self.config["API_KEYS"]["MISTRAL"] = key
-        self.save_config()
-
-    def set_groq_api_key(self, key):
-        self.config["API_KEYS"]["GROQ"] = key
-        self.save_config()
-
-    def set_netlify_api_key(self, key):
-        self.config["API_KEYS"]["NETLIFY"] = key
-        self.save_config()
-
-    def set_sqlite_db(self, db):
-        self.config["STORAGE"]["SQLITE_DB"] = db
-        self.save_config()
-
-    def set_screenshots_dir(self, dir):
-        self.config["STORAGE"]["SCREENSHOTS_DIR"] = dir
-        self.save_config()
-
-    def set_pdfs_dir(self, dir):
-        self.config["STORAGE"]["PDFS_DIR"] = dir
-        self.save_config()
-
-    def set_projects_dir(self, dir):
-        self.config["STORAGE"]["PROJECTS_DIR"] = dir
-        self.save_config()
-
-    def set_logs_dir(self, dir):
-        self.config["STORAGE"]["LOGS_DIR"] = dir
-        self.save_config()
-
-    def set_repos_dir(self, dir):
-        self.config["STORAGE"]["REPOS_DIR"] = dir
-        self.save_config()
-
-    def set_logging_rest_api(self, value):
-        self.config["LOGGING"]["LOG_REST_API"] = "true" if value else "false"
-        self.save_config()
-
-    def set_logging_prompts(self, value):
-        self.config["LOGGING"]["LOG_PROMPTS"] = "true" if value else "false"
-        self.save_config()
+    def get_terminal_tokenizer(self):
+        return tiktoken.get_encoding(self.config["commands"]["terminal"]["token_encoding"])
+    
+    def get_terminal_base_model(self):
+        return self.config["commands"]["terminal"]["base_model"]
+    
+    # def set_value(self, value):
+    #     self.config["EXAMPLE"]["KEY"] = value
+    #     self.save_config()
 
     def save_config(self):
-        with open("config.toml", "w") as f:
+        with open("tilda.toml", "w") as f:
             toml.dump(self.config, f)

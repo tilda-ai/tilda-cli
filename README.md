@@ -9,11 +9,9 @@ A command-line interface based on AI for automating software development, from s
 
 ## Installation
 
-To use the ~tilda CLI, you need Python installed on your system.
+To use the ~tilda CLI, you need Python >=3.12 installed on your system.
 
-The tool has been tested with Python 3.12.2.
-
-For now you can install it directly from source by cloning the repository.
+For now, to run tilda locally from your command line, you can install it directly from source by cloning the repository.
 
 1. Install [uv](https://github.com/astral-sh/uv) or use pip3.
 

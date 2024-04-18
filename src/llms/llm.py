@@ -7,18 +7,14 @@ from .gemini_client import Gemini
 from .mistral_client import MistralAi
 from .groq_client import Groq
 
-# from src.state import AgentState
-
-from src.config import Config
+# from src.state import State
+# state = State()
 
 ollama = Ollama()
-# agentState = AgentState()
-config = Config()
 
 class LLM:
     def __init__(self, model_id: str = None):
         self.model_id = model_id
-        self.log_prompts = config.get_logging_prompts()
         
         self.models = {
             "CLAUDE": [
@@ -69,14 +65,14 @@ class LLM:
         return mapping
 
     @staticmethod
-    def update_global_token_usage(string: str, project_name: str):
-        token_usage = len(config.get_tokenizer.encode(string))
-        # agentState.update_token_usage(project_name, token_usage)
+    def update_global_token_usage(string: str, tokenizer):
+        token_usage = len(tokenizer.encode(string))
+        # state.update_token_usage(token_usage)
         pass
 
-    def inference(self, prompt: str) -> str:
+    def inference(self, prompt: str, tokenizer) -> str:
         # Update global token usage
-        self.update_global_token_usage(prompt)
+        self.update_global_token_usage(prompt, tokenizer)
         # Get the model enum from the model id
         model_enum = self.model_id_to_enum_mapping().get(self.model_id)
         
@@ -100,9 +96,8 @@ class LLM:
         except KeyError:
             raise ValueError(f"Model {model_enum} not supported")
 
-        if self.log_prompts:
-            logging.debug(f"Response ({model}): --> {response}")
+        logging.debug(f"Response ({model}): --> {response}")
 
-        self.update_global_token_usage(response)
+        self.update_global_token_usage(response, tokenizer)
 
         return response

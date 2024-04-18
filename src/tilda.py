@@ -1,21 +1,16 @@
+#!/usr/bin/env python3
+
 import argparse
 import sys
 import logging
 
 from src.commands import commands
 
-#TODO: add to prompt last few commands
-#TODO: parse file imports to get all relevant code
-#TODO: prase last file inserts
-#TODO: look for usages of relevant code
-#TODO: add init command
-#TODO: add threading
-
 def configure_parser():
     """Configure and return the main argument parser with subparsers for commands."""
-    parser = argparse.ArgumentParser(description="~tilda - The AI CLI")
+    parser = argparse.ArgumentParser(description="The AI CLI")
     parent_parser = argparse.ArgumentParser(add_help=False)
-    parent_parser.add_argument('--careless', action='store_true', help="Execute the command without explicit approval.")
+    parent_parser.add_argument('--scope', action='store_true', help="Execute the command in specific scope.")
     
     # Subparser setup
     subparsers = parser.add_subparsers(dest='subcommand', required=True, help='Sub-command help')
@@ -38,7 +33,3 @@ def main():
     else:
         logging.error("Unknown command")
         sys.exit(1)
-
-#TODO: try to remove this
-if __name__ == '__main__':
-    main()

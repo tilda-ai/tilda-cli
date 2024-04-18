@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import logging
 
 # Set up default logging for the entire package

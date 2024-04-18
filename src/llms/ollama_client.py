@@ -6,7 +6,8 @@ from src.config import Config
 class Ollama:
     def __init__(self):
         try:
-            self.client = ollama.Client(Config().get_ollama_api_endpoint())
+            config = Config()
+            self.client = ollama.Client(config.get_ollama_api_endpoint())
             self.models = self.client.list()["models"]
             logging.info("Ollama available")
         except:

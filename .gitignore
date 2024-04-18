@@ -1,5 +1,10 @@
 # User defined ignore files
-config.toml
+tilda.toml
+.tilda/
+todo.txt
+
+# Apple files
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

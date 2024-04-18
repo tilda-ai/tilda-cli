@@ -1,1 +1,1 @@
-from .terminal import terminal
+from .terminal import Terminal, TerminalCommandArgs
