@@ -13,11 +13,11 @@ class Config:
 
     def _load_config(self):
         # If the config file doesn't exist, copy from the sample
-        if not os.path.exists("tilda.toml"):
-            with open("sample.tilda.toml", "r") as f_in, open("tilda.toml", "w") as f_out:
+        if not os.path.exists("tildaconfig.toml"):
+            with open("tildaconfig.sample.toml", "r") as f_in, open("tildaconfig.toml", "w") as f_out:
                 f_out.write(f_in.read())
 
-        self.config = toml.load("tilda.toml")
+        self.config = toml.load("tildaconfig.toml")
 
     def get_config(self):
         return self.config
@@ -54,5 +54,5 @@ class Config:
     #     self.save_config()
 
     def save_config(self):
-        with open("tilda.toml", "w") as f:
+        with open("tildaconfig.toml", "w") as f:
             toml.dump(self.config, f)

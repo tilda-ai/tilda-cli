@@ -1,5 +1,5 @@
 # User defined ignore files
-tilda.toml
+tildaconfig.toml
 .tilda/
 todo.txt
 
