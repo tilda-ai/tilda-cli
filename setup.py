@@ -7,6 +7,10 @@ setup(
     version='0.0.1',
     python_requires='>=3.12',
     packages=find_packages(exclude=('tests',)),
+    package_data={
+        '': ['*.jinja2'], # If any package contains *.jinja2 files, include them.
+    },
+    include_package_data=True,
     install_requires=[
         'argparse==1.4.0',
         'logging==0.4.9.6',
