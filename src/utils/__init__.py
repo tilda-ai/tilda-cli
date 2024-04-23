@@ -1,5 +1,6 @@
-from .append_to_file import append_to_file
-from .is_in_file import is_in_file
-from .jinja_setup import get_jinja_env
-from .get_tree import get_tree
-from .configure_shell_output_logging import configure_command_output_logging
+from file_system import backup_file, restore_file_from_backup, append_to_file, is_in_file
+from shell_scripts import validate_shell_script, append_script_to_shell_rc
+from user_interactions import user_confirmation
+from read_cmd_history import read_cmd_history
+from get_jinja_env import get_jinja_env
+from get_tree import get_tree

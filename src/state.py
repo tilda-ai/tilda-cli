@@ -9,7 +9,7 @@ class StateModel(SQLModel, table=True):
     __tablename__ = "state"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    command: str
+    prompt: str
     state_stack_json: str
 
 class State:
@@ -29,7 +29,7 @@ class State:
                 "screenshot": None
             },
             "terminal_session": {
-                "command": None,
+                "prompt": None,
                 "output": None,
                 "title": None
             },
@@ -41,16 +41,16 @@ class State:
             "timestamp": timestamp
         }
 
-    def delete_state(self, command: str):
+    def delete_state(self, prompt: str):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 session.delete(state)
                 session.commit()
 
-    def add_to_current_state(self, command: str, state: dict):
+    def add_to_current_state(self, prompt: str, state: dict):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 state_stack = json.loads(state.state_stack_json)
                 state_stack.append(state)
@@ -58,20 +58,20 @@ class State:
                 session.commit()
             else:
                 state_stack = [state]
-                state = StateModel(command=command, state_stack_json=json.dumps(state_stack))
+                state = StateModel(prompt=prompt, state_stack_json=json.dumps(state_stack))
                 session.add(state)
                 session.commit()
 
-    def get_current_state(self, command: str):
+    def get_current_state(self, prompt: str):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 return json.loads(state.state_stack_json)
             return None
 
-    def update_latest_state(self, command: str, state: dict):
+    def update_latest_state(self, prompt: str, state: dict):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 state_stack = json.loads(state.state_stack_json)
                 state_stack[-1] = state
@@ -79,20 +79,20 @@ class State:
                 session.commit()
             else:
                 state_stack = [state]
-                state = StateModel(command=command, state_stack_json=json.dumps(state_stack))
+                state = StateModel(prompt=prompt, state_stack_json=json.dumps(state_stack))
                 session.add(state)
                 session.commit()
 
-    def get_latest_state(self, command: str):
+    def get_latest_state(self, prompt: str):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 return json.loads(state.state_stack_json)[-1]
             return None
 
-    def set_active(self, command: str, is_active: bool):
+    def set_active(self, prompt: str, is_active: bool):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 state_stack = json.loads(state.state_stack_json)
                 state_stack[-1]["is_active"] = is_active
@@ -101,20 +101,20 @@ class State:
             else:
                 state_stack = [self.new_state()]
                 state_stack[-1]["is_active"] = is_active
-                state = StateModel(command=command, state_stack_json=json.dumps(state_stack))
+                state = StateModel(prompt=prompt, state_stack_json=json.dumps(state_stack))
                 session.add(state)
                 session.commit()
 
-    def is_active(self, command: str):
+    def is_active(self, prompt: str):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 return json.loads(state.state_stack_json)[-1]["is_active"]
             return None
 
-    def set_completed(self, command: str, is_completed: bool):
+    def set_completed(self, prompt: str, is_completed: bool):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 state_stack = json.loads(state.state_stack_json)
                 state_stack[-1]["internal_monologue"] = "Agent has completed the task."
@@ -124,20 +124,20 @@ class State:
             else:
                 state_stack = [self.new_state()]
                 state_stack[-1]["completed"] = is_completed
-                state = StateModel(command=command, state_stack_json=json.dumps(state_stack))
+                state = StateModel(prompt=prompt, state_stack_json=json.dumps(state_stack))
                 session.add(state)
                 session.commit()
 
-    def is_completed(self, command: str):
+    def is_completed(self, prompt: str):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 return json.loads(state.state_stack_json)[-1]["completed"]
             return None
             
-    def update_token_usage(self, command: str, token_usage: int):
+    def update_token_usage(self, prompt: str, token_usage: int):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 state_stack = json.loads(state.state_stack_json)
                 state_stack[-1]["token_usage"] += token_usage
@@ -146,13 +146,13 @@ class State:
             else:
                 state_stack = [self.new_state()]
                 state_stack[-1]["token_usage"] = token_usage
-                state = StateModel(command=command, state_stack_json=json.dumps(state_stack))
+                state = StateModel(prompt=prompt, state_stack_json=json.dumps(state_stack))
                 session.add(state)
                 session.commit()
 
-    def get_latest_token_usage(self, command: str):
+    def get_latest_token_usage(self, prompt: str):
         with Session(self.engine) as session:
-            state = session.query(StateModel).filter(StateModel.command == command).first()
+            state = session.query(StateModel).filter(StateModel.prompt == prompt).first()
             if state:
                 return json.loads(state.state_stack_json)[-1]["token_usage"]
             return 0

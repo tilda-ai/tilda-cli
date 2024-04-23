@@ -1,8 +1,10 @@
 import os
 import platform
 
+#TODO: add logging
 #TODO: fix get os type
-#TODO: remove main function call
+#TODO: for mac os make the default shell zsh
+#TODO: add support for more shell types
 
 def get_os_type():
     return platform.system().lower()  # 'linux', 'darwin' (macOS), 'windows'
@@ -36,7 +38,7 @@ def get_history_file():
     shell = os.getenv('SHELL', 'bash').split('/')[-1]  # Default to Bash if SHELL env var is not set
     return history_files.get(os_type, {}).get(shell, None)
 
-def read_shell_command_history():
+def read_cmd_history():
     history_file = get_history_file()
     if not history_file:
         return "Unsupported shell or OS for history retrieval."
@@ -50,14 +52,3 @@ def read_shell_command_history():
         return "History file not found."
     except Exception as e:
         return f"An error occurred: {str(e)}"
-
-def main():
-    last_commands = read_history()
-    if isinstance(last_commands, list):
-        for command in last_commands:
-            print(command.strip())
-    else:
-        print(last_commands)
-
-if __name__ == "__main__":
-    main()

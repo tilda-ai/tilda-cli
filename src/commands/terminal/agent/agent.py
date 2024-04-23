@@ -1,8 +1,7 @@
 from pathlib import Path
-from jinja2 import Environment, PackageLoader, select_autoescape
 
-from src.agents.terminal.types import TerminalCommandArgs
-from src.config.config import Config
+from src.commands.v1.terminal.types import TerminalCommandArgs
+from src.config import Config
 from src.llms import LLM
 from src.utils import get_tree, get_jinja_env
 
