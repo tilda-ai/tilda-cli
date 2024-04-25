@@ -1,8 +1,9 @@
 # src/commands/run_terminal.py
-
 import logging
 
-from src.commands.terminal.types import TerminalAgent, TerminalCommandArgs
+from .agent import TerminalAgent
+from .types import TerminalCommandArgs
+
 
 def run_terminal(args: TerminalCommandArgs):
     logging.info(f"Running tilda terminal agent with prompt: {args.prompt} | scope: {args.scope}")

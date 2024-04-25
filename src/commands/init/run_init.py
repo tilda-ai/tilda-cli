@@ -1,7 +1,7 @@
 # src/commands/run_init.py
 import logging
 
-from src.commands.init.scripts import configure_cmd_real_time_history, touch_tildaconfig
+from .scripts import configure_cmd_real_time_history, touch_tildaconfig
 from src.utils import append_to_file
 
 

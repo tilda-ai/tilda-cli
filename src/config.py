@@ -4,8 +4,6 @@ import os
 import tiktoken
 
 from src.utils import get_project_config_files, get_tree, get_user_shell, read_cmd_history
-
-
 class Config:
     _instance = None
     def __new__(cls):
@@ -20,16 +18,11 @@ class Config:
     def get_config(self):
         return self.config
     
-    def get_user_os():
+    def get_user_os(self):
         return os.name
     
-    def get_user_home_directory():
-        return os.path.expanduser('~')
-    
-    def get_user_shell():
-        return get_user_shell()
-    
     def get_project_tree(self):
+        print(get_tree(Path.cwd()))
         return get_tree(Path.cwd())
     
     def get_dev_env_context(self):
@@ -81,5 +74,3 @@ class Config:
     # def save_config(self):
     #     with open("tildaconfig.toml", "w") as f:
     #         toml.dump(self.config, f)
-
-config = Config()

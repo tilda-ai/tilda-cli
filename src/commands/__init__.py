@@ -1,1 +1,1 @@
-from commands_config import commands
+from .commands_config import commands

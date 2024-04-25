@@ -3,6 +3,9 @@ import logging
 import os
 import shutil
 
+def get_user_home_directory():
+    return os.path.expanduser('~')
+
 def append_to_file(filename, entry):
     if os.path.exists(filename):
         with open(filename, 'r+') as file:

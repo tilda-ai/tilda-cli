@@ -1,15 +1,15 @@
 from pathlib import Path
 
-from src.commands.terminal.types import TerminalCommandArgs
-from src.config import config
+from ..types import TerminalCommandArgs
+from src import config
 from src.llms import LLM
-from src.utils import get_tree, get_jinja_env
+from src.utils import get_jinja_env
 
 
 class TerminalAgent:
     def __init__(self):
         self.llm = LLM(model_id=config.get_terminal_command_base_model())
-        self.template = get_jinja_env().get_template('terminal_agent_prompt.jinja2')
+        self.template = get_jinja_env().get_template('terminal/agent/agent_prompt.jinja2')
         self.tokenizer = config.get_terminal_tokenizer()
 
     def render(self, args: TerminalCommandArgs) -> str:

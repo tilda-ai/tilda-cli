@@ -1,17 +1,18 @@
 import os
 import logging
 
-from src.config import config
+from .file_system import get_user_home_directory
+from .get_user_shell import get_user_shell
 
 
 def get_history_file_path():
-    home = config.get_user_home_directory()
+    home = get_user_home_directory()
     history_files_map = {
         'bash': os.path.join(home, '.bash_history'),
         'zsh': os.path.join(home, '.zsh_history'),
         'fish': os.path.join(home, '.fish_history'),
     }
-    user_shell = config.get_user_shell()
+    user_shell = get_user_shell()
     return history_files_map.get(user_shell)
 
 def read_last_commands(history_file, num_commands=10):

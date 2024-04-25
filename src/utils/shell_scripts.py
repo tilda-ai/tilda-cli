@@ -2,8 +2,8 @@ import logging
 import os
 from subprocess import CalledProcessError, call
 
-from src.utils import backup_file, user_confirmation, restore_file_from_backup
-from src.config import config
+from .file_system import backup_file, restore_file_from_backup, get_user_home_directory
+from .user_interactions import user_confirmation
 
 def validate_shell_script(shell_path, shell):
     """ Validate the shell script using the specified shell. """
@@ -17,7 +17,7 @@ def validate_shell_script(shell_path, shell):
 
 def append_script_to_shell_rc(shell, script, user_confirmation_prompt):
     """ Append a script to the shell's rc file after user confirmation. """
-    home = config.get_user_home_directory()
+    home = get_user_home_directory()
     shell_rc_path = os.path.join(home, f".{shell}rc")
     if not os.path.exists(shell_rc_path):
         logging.warning(f"{shell}rc does not exist; skipping modifications.")

@@ -1,6 +1,6 @@
 from openai import OpenAI
 
-from src.config import config
+from src import config
 
 
 class OpenAi:

@@ -1,8 +1,7 @@
 import os
 import logging
 
-from src.utils import append_script_to_shell_rc
-from src.config import config
+from src.utils import append_script_to_shell_rc, get_user_shell
 
 # Define user confirmation prompt
 user_confirmation_prompt = """
@@ -43,7 +42,7 @@ shell_rt_history_scripts = {
 }
 
 def configure_cmd_real_time_history():
-    shell = config.get_user_shell()
+    shell = get_user_shell()
     rt_history_script = shell_rt_history_scripts.get(shell)
     if rt_history_script:
         append_script_to_shell_rc(shell, rt_history_script, user_confirmation_prompt)

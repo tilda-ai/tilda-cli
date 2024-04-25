@@ -1,1 +1,1 @@
-from agent import TerminalAgent
+from .agent import TerminalAgent

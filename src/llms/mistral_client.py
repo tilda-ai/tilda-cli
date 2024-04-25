@@ -1,7 +1,7 @@
 from mistralai.client import MistralClient
 from mistralai.models.chat_completion import ChatMessage
 
-from src.config import config
+from src import config
 
 
 class MistralAi:

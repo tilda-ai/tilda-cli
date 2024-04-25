@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.utils import is_in_file
+from .file_system import is_in_file
 
 # prefix components:
 space =  '    '

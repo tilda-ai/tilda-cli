@@ -1,6 +1,6 @@
 from groq import Groq as _Groq
 
-from src.config import config
+from src import config
 
 
 class Groq:

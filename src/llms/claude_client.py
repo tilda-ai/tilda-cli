@@ -1,6 +1,6 @@
 from anthropic import Anthropic
 
-from src.config import config
+from src import config
 
 class Claude:
     def __init__(self):

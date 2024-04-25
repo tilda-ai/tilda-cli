@@ -6,6 +6,7 @@ import logging
 
 from src.commands import commands
 
+
 def configure_parser():
     """Configure and return the main argument parser with subparsers for commands."""
     parser = argparse.ArgumentParser(description="The AI CLI")

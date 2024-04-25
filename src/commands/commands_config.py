@@ -1,7 +1,7 @@
 # src/commands/commands.py
 
-from src.commands.init import run_init
-from src.commands.terminal import run_terminal
+from .init import run_init
+from .terminal import run_terminal
 
 commands = {
     'init': {

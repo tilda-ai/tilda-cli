@@ -1,2 +1,2 @@
-from configure_cmd_real_time_history import configure_cmd_real_time_history
-from touch_tildaconfig import touch_tildaconfig
+from .configure_cmd_real_time_history import configure_cmd_real_time_history
+from .touch_tildaconfig import touch_tildaconfig
