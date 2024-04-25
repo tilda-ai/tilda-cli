@@ -1,11 +1,10 @@
+from pathlib import Path
 import toml
 import os
 import tiktoken
 
-from src.utils.jinja_setup import get_jinja_env
+from src.utils import get_project_config_files, get_tree, get_user_shell, read_cmd_history
 
-package_path = os.path.dirname(__file__)  # Adjust this depending on the location of your file
-print("Package path:", package_path)
 
 class Config:
     _instance = None
@@ -21,15 +20,30 @@ class Config:
     def get_config(self):
         return self.config
     
-    def get_sqlite_db(self):
-        return ".tilda/db/sqlite.db"
-    
-    def get_context(self):
-        return self.config["dev_env_context"]
-    
     def get_user_os():
         return os.name
     
+    def get_user_home_directory():
+        return os.path.expanduser('~')
+    
+    def get_user_shell():
+        return get_user_shell()
+    
+    def get_project_tree(self):
+        return get_tree(Path.cwd())
+    
+    def get_dev_env_context(self):
+        return self.config["dev_env_context"]
+
+    def get_project_config_files(self):
+        return get_project_config_files(Path.cwd())
+
+    def get_working_directory(self):
+        return Path.cwd()
+    
+    def get_commands_history(self):
+        return read_cmd_history()
+
     def get_ollama_api_endpoint(self):
         return self.config["api_endpoints"]["ollama"]
 
@@ -51,13 +65,21 @@ class Config:
     def get_terminal_tokenizer(self):
         return tiktoken.get_encoding(self.config["commands"]["terminal"]["token_encoding"])
     
-    def get_terminal_base_model(self):
+    def get_terminal_command_base_model(self):
         return self.config["commands"]["terminal"]["base_model"]
     
+    # TODO: Implement conversations history
+    # def get_sqlite_db(self):
+    #     return ".tilda/db/sqlite.db"
+
+    # TODO: Implement dynamic configuration
     # def set_value(self, value):
     #     self.config["EXAMPLE"]["KEY"] = value
     #     self.save_config()
+    
+    # TODO: Implement dynamic configuration
+    # def save_config(self):
+    #     with open("tildaconfig.toml", "w") as f:
+    #         toml.dump(self.config, f)
 
-    def save_config(self):
-        with open("tildaconfig.toml", "w") as f:
-            toml.dump(self.config, f)
+config = Config()

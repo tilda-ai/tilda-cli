@@ -1,3 +1,2 @@
-from configure_cmd_output_logging import configure_cmd_output_logging
 from configure_cmd_real_time_history import configure_cmd_real_time_history
 from touch_tildaconfig import touch_tildaconfig

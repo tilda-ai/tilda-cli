@@ -1,24 +1,28 @@
 from pathlib import Path
 
-from src.commands.v1.terminal.types import TerminalCommandArgs
-from src.config import Config
+from src.commands.terminal.types import TerminalCommandArgs
+from src.config import config
 from src.llms import LLM
 from src.utils import get_tree, get_jinja_env
 
 
 class TerminalAgent:
     def __init__(self):
-        config = Config()
-        self.user_os = config.get_user_os()
-        self.tree = get_tree(Path.cwd())
-        self.base_model = config.get_terminal_base_model()
+        self.llm = LLM(model_id=config.get_terminal_command_base_model())
+        self.template = get_jinja_env().get_template('terminal_agent_prompt.jinja2')
         self.tokenizer = config.get_terminal_tokenizer()
-        self.llm = LLM(model_id=self.base_model)
-        self.env = get_jinja_env()
-        self.template = self.env.get_template('terminal_agent_prompt.jinja2')
 
     def render(self, args: TerminalCommandArgs) -> str:
-        return self.template.render(prompt=args.prompt, scope=args.scope)
+        return self.template.render(
+            prompt=args.prompt, 
+            scope=args.scope,
+            user_os=config.get_user_os(),
+            project_tree=config.get_project_tree(),
+            dev_env_context=config.get_dev_env_context(),
+            project_config_files=config.get_project_config_files(),
+            working_directory=config.get_working_directory(),
+            commands_history=config.get_commands_history(),
+        )
 
     def execute(self, args: TerminalCommandArgs) -> str:
         prompt = self.render(args)

@@ -1,11 +1,10 @@
 from groq import Groq as _Groq
 
-from src.config import Config
+from src.config import config
 
 
 class Groq:
     def __init__(self):
-        config = Config()
         api_key = config.get_groq_api_key()
         self.client = _Groq(api_key=api_key)
 

@@ -4,3 +4,5 @@ from user_interactions import user_confirmation
 from read_cmd_history import read_cmd_history
 from get_jinja_env import get_jinja_env
 from get_tree import get_tree
+from get_project_config_files import get_project_config_files
+from get_user_shell import get_user_shell
