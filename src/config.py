@@ -22,7 +22,6 @@ class Config:
         return os.name
     
     def get_project_tree(self):
-        print(get_tree(Path.cwd()))
         return get_tree(Path.cwd())
     
     def get_dev_env_context(self):

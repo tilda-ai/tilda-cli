@@ -52,6 +52,7 @@ def is_in_file(filename, entry):
                 # break the content into a list of lines
                 content = content.split("\n")
                 # check if the entry matches the line utilize shell-style wildcard matching
+                # TODO: match case is too loose, if there's a line with src, the entire src will be matched and ignored in later scripts
                 for line in content:
                     if line:
                         if fnmatch(entry.strip('/'), line.strip('/')):
