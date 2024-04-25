@@ -10,11 +10,15 @@ and output the terminal commands the user will have to run in a structured forma
 The user's operating system is: {{user_os}}
 
 
+{% if dev_env_context %}
 The user's development environment is running the following tools:
 ```json
 {{dev_env_context}}
 ```
+{% endif %}
 
+
+{% if project_config_files[0].path is defined %}
 This is the main project config file/s:
 {% for path, details in project_config_files.items() %}
 Project Type: {{ details.type }}
@@ -24,6 +28,7 @@ File Path: {{ path }}
 {{details.content}}
 ```
 {% endfor %}
+{% endif %}
 
 
 This is the directory structure of the project:

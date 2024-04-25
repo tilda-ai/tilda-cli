@@ -1,11 +1,12 @@
 from mistralai.client import MistralClient
 from mistralai.models.chat_completion import ChatMessage
 
-from src import config
+from src.config import Config
 
 
 class MistralAi:
     def __init__(self):
+        config = Config()
         api_key = config.get_mistral_api_key()
         self.client = MistralClient(api_key=api_key)
 

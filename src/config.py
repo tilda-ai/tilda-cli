@@ -3,7 +3,7 @@ import toml
 import os
 import tiktoken
 
-from src.utils import get_project_config_files, get_tree, get_user_shell, read_cmd_history
+from src.utils import get_project_config_files, get_tree, read_cmd_history
 class Config:
     _instance = None
     def __new__(cls):

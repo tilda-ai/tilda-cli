@@ -1,9 +1,10 @@
 from anthropic import Anthropic
 
-from src import config
+from src.config import Config
 
 class Claude:
     def __init__(self):
+        config = Config()
         api_key = config.get_claude_api_key()
         self.client = Anthropic(
             api_key=api_key,
