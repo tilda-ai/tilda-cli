@@ -238,7 +238,3 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
-# ignore dev files
-src/commands/init/scripts/configure_cmd_output_logging.py
-src/state.py
-src/utils/read_cmd_output.py
