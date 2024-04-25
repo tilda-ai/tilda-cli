@@ -5,6 +5,6 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 def get_jinja_env():
     env = Environment(
         loader=PackageLoader('src', 'commands'),
-        autoescape=select_autoescape(['jinja2'])
+        autoescape=select_autoescape(['html', 'xml'])
     )
     return env

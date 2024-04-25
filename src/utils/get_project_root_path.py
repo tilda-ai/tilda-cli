@@ -21,13 +21,3 @@ def get_project_root_path(current_dir):
         
         # Update the current directory to the parent directory
         current_dir = parent_dir
-
-# if __name__ == "__main__":
-#     # Start searching from the current working directory
-#     current_working_directory = os.getcwd()
-#     root_directory = get_project_root_path(current_working_directory)
-    
-#     if root_directory:
-#         print(f"Project root found at: {root_directory}")
-#     else:
-#         print("Project root not found.")

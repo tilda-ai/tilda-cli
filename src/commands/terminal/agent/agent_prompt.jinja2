@@ -9,28 +9,22 @@ and output the terminal commands the user will have to run in a structured forma
 
 The user's operating system is: {{user_os}}
 
-
 {% if dev_env_context %}
 The user's development environment is running the following tools:
 ```json
 {{dev_env_context}}
 ```
 {% endif %}
-
-
-{% if project_config_files[0].path is defined %}
+{% if project_config_files is defined and project_config_files is mapping and project_config_files|length > 0 %}
 This is the main project config file/s:
 {% for path, details in project_config_files.items() %}
 Project Type: {{ details.type }}
 File Path: {{ path }}
-
-```{{details.markdown_language}}
-{{details.content}}
+```{{ details.markdown_language }}
+{{ details.content }}
 ```
 {% endfor %}
 {% endif %}
-
-
 This is the directory structure of the project:
 ```markdown
 {{project_tree}}
@@ -38,10 +32,12 @@ This is the directory structure of the project:
 
 The current working directory is: {{working_directory}}
 
+
 The user's terminal history is:
 ```shell
-{{commands_history}}
+{% for command in commands_history %}{{ command }}{% endfor %}
 ```
+
 
 Here are some interaction examples with the user:
 

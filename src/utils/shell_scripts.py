@@ -30,7 +30,7 @@ def append_script_to_shell_rc(shell, script, user_confirmation_prompt):
 
     backup_file(shell_rc_path)
     try:
-        with open(shell_rc_path, 'r+') as file:
+        with open(shell_rc_path, 'r+', encoding="utf-8") as file:
             content = file.read()
             if script.strip() in content:
                 logging.info(f"Changes are already applied in {shell}rc")

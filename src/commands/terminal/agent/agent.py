@@ -32,7 +32,7 @@ class TerminalAgent:
         # TODO: extract the logs directory to a config file
         logs_dir = Path(get_project_root_path(Path.cwd())) / '.tilda' / 'logs'
         logs_dir.mkdir(parents=True, exist_ok=True)
-        with open(logs_dir / 'command-terminal-prompt.md', 'w') as file:
+        with open(logs_dir / 'command-terminal-prompt.md', 'w', encoding="utf-8") as file:
             file.write(rendered_prompt)
 
         return rendered_prompt

@@ -10,7 +10,7 @@ def touch_tildaconfig(base_path: str):
 
         sample_config = env.get_template('init/tildaconfig.jinja2').render()
         # save the sample config to tildaconfig.toml
-        with open(config_path, "w") as file:
+        with open(config_path, "w", encoding="utf-8") as file:
 
             file.write(sample_config)
         logging.info("tildaconfig.toml created successfully.")

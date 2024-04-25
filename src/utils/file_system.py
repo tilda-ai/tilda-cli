@@ -8,7 +8,7 @@ def get_user_home_directory():
 
 def append_to_file(filename, entry):
     if os.path.exists(filename):
-        with open(filename, 'r+') as file:
+        with open(filename, 'r+', encoding="utf-8") as file:
             content = file.read()
             if entry in content:
                 logging.info(f"{entry} is already listed in {filename}.")
@@ -44,7 +44,7 @@ def restore_file_from_backup(file_path):
 
 def is_in_file(filename, entry):
     if os.path.exists(filename):
-        with open(filename, 'r') as file:
+        with open(filename, 'r', encoding="utf-8") as file:
             content = file.read()
             if entry in content:
                 return True

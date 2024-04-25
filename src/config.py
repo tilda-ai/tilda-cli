@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import toml
 import os
@@ -25,7 +26,7 @@ class Config:
         return get_tree(Path.cwd())
     
     def get_dev_env_context(self):
-        return self.config["dev_env_context"]
+        return json.dumps(self.config["dev_env_context"], indent=4)
 
     def get_project_config_files(self):
         return get_project_config_files(Path.cwd())

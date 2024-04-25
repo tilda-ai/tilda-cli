@@ -79,7 +79,7 @@ def get_project_config_files(path):
                 file_type = ext[1:] if ext else filename  # remove the dot from the extension
                 markdown_language = markdown_languages.get(file_type, 'text')
 
-                with open(full_path, 'r') as file:
+                with open(full_path, 'r', encoding="utf-8") as file:
                     content = file.read()
                     found_files[full_path] = {
                         'type': project_type,
