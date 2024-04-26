@@ -17,5 +17,7 @@ def run_terminal(args: TerminalCommandArgs):
     #TODO: return the response to the user and let him choose to run in with enter key
     # return response
 
+    print(response)
+
     pass
     

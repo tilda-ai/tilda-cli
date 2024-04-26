@@ -8,7 +8,7 @@ def get_project_config_files(path):
         'Java (Gradle)': ['build.gradle'],
         'Python (setuptools)': ['setup.py'],
         'Python (pipenv)': ['Pipfile'],
-        'Python (poetry)': ['pyproject.toml'],
+        'Python (package)': ['pyproject.toml'],
         'C# (.NET)': ['.csproj', '.vbproj'],
         'Ruby': ['Gemfile'],
         'PHP (Composer)': ['composer.json'],
@@ -64,7 +64,7 @@ def get_project_config_files(path):
         'tpl': 'smarty', 'sources.list': 'sourceslist', 'sql': 'sql', 'sqlite3-console': 'sqlite3', 'squid.conf': 'squidconf',
         'ssp': 'ssp', 'tcl': 'tcl', 'tcsh': 'tcsh', 'tex': 'tex', 'txt': 'text',
         'v': 'v', 'vala': 'vala', 'vb': 'vbnet', 'vm': 'velocity', 'vim': 'vim',
-        'xml': 'xml', 'xquery': 'xquery', 'xslt': 'xslt', 'yaml': 'yaml'
+        'xml': 'xml', 'xquery': 'xquery', 'xslt': 'xslt', 'yaml': 'yaml', 'toml': 'toml',
     }
 
     found_files = {}

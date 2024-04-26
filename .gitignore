@@ -2,6 +2,7 @@
 tildaconfig.toml
 .tilda/
 todo.txt
+gpt-system-prompt.txt
 
 # Apple files
 .DS_Store
@@ -237,4 +238,5 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+
 

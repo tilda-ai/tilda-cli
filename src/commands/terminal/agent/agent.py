@@ -1,3 +1,4 @@
+import datetime
 from pathlib import Path
 
 from ..types import TerminalCommandArgs
@@ -23,6 +24,8 @@ class TerminalAgent:
             project_config_files=self.config.get_project_config_files(),
             working_directory=self.config.get_working_directory(),
             commands_history=self.config.get_commands_history(),
+            project_root='tilda',
+            current_date=datetime.date.today().strftime('%Y-%m-%d')
         )
 
         # save the rendered prompt to a file in the project's root directory
@@ -42,4 +45,4 @@ class TerminalAgent:
         # response = self.llm.inference(prompt, self.tokenizer)
 
         # return response
-        return prompt
+        return 'response'
