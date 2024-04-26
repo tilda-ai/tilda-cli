@@ -42,7 +42,6 @@ class TerminalAgent:
 
     def execute(self, args: TerminalCommandArgs) -> str:
         prompt = self.render(args)
-        # response = self.llm.inference(prompt, self.tokenizer)
+        response = self.llm.inference(prompt, self.tokenizer)
 
-        # return response
-        return 'response'
+        return response
