@@ -19,6 +19,10 @@ For now, to run tilda locally from your command line, you can install it directl
 
 
 ```shell
+# ---
+# Installation
+# ---
+
 # clone the repo
 git clone https://github.com/tilda/tilda.git
 cd tilda
@@ -36,10 +40,23 @@ python3 -m build
 # deactivate venv (or run the next command in a new terminal)
 deactivate
 
-# install the tilda package in edit mode for development
+# install the tilda package globally
+pipx install .
+
+tilda terminal "clean all python cache files"
+
+# ---
+# Development
+# ---
+
+# 1. install the tilda package in edit mode
 pipx install -e .
 
-tilda terminal "say hello"
+# 2. run watch mode
+python3 watch.py 
+
+# to delete the global installation
+pipx uninstall tilda
 ```
 
 
