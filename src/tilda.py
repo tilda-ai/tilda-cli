@@ -12,6 +12,7 @@ def configure_parser():
     parser = argparse.ArgumentParser(description="The AI CLI")
     parent_parser = argparse.ArgumentParser(add_help=False)
     parent_parser.add_argument('--dry', action='store_true', help="Execute the command in dry mode (without model inference).")
+    parent_parser.add_argument('--mock', action='store_true', help="Respond with mock data found in .tilda/mock_responses/<COMMAND_NAME>.json")
     
     # Subparser setup
     subparsers = parser.add_subparsers(dest='subcommand', required=True, help='Sub-command help')

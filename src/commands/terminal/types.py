@@ -5,3 +5,4 @@ from typing import Optional
 class TerminalCommandArgs:
     prompt: str
     dry: Optional[bool] = False
+    mock: Optional[bool] = False

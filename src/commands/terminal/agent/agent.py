@@ -44,6 +44,9 @@ class TerminalAgent:
     def execute(self, args: TerminalCommandArgs) -> str:
         rendered_prompt = self.render(args)
         
+        if args.mock:
+            return self.config.get_terminal_command_mock_response()
+        
         if args.dry:
             return 'No inference made. Dry run mode.'
         

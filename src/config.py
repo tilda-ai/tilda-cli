@@ -45,6 +45,9 @@ class Config:
     def get_terminal_command_base_model(self):
         return self.config["commands"]["terminal"]["base_model"]
     
+    def get_terminal_command_mock_response(self):
+        return self.config["commands"]["terminal"]["mock_response"]
+    
     # TODO: Implement conversations history
     # def get_sqlite_db(self):
     #     return ".tilda/db/sqlite.db"
