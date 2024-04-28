@@ -1,6 +1,11 @@
 import os
+from pathlib import Path
 
-def get_project_config_files(path):
+from .get_file_project_path import get_file_project_path
+
+def get_project_config_files():
+    current_dir = Path.cwd()
+
     # Expanded list of potential project files with key identifiers for project types
     known_project_config_files = {
         'Node.js': ['package.json'],
@@ -72,16 +77,17 @@ def get_project_config_files(path):
     # Check each file in the list to see if it exists in the given path
     for project_type, filenames in known_project_config_files.items():
         for filename in filenames:
-            full_path = os.path.join(path, filename)
-            if os.path.exists(full_path):
+            file_path = os.path.join(current_dir, filename)
+            if os.path.exists(file_path):
                 # Extract file type (extension) or use filename if no extension
                 _, ext = os.path.splitext(filename)
                 file_type = ext[1:] if ext else filename  # remove the dot from the extension
                 markdown_language = markdown_languages.get(file_type, 'text')
 
-                with open(full_path, 'r', encoding="utf-8") as file:
+                with open(file_path, 'r', encoding="utf-8") as file:
                     content = file.read()
-                    found_files[full_path] = {
+                    found_files[file_path] = {
+                        'file_project_path': get_file_project_path(file_path),
                         'type': project_type,
                         'content': content,
                         'file_type': file_type,

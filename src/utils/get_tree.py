@@ -1,4 +1,7 @@
+"""Get the tree structure of a directory."""
 from pathlib import Path
+
+from .get_project_root import get_project_root_path
 
 from .file_system import is_in_file
 
@@ -29,4 +32,10 @@ def tree(dir_path: Path, prefix: str=''):
             yield from tree(path, prefix=prefix+extension)
 
 def get_tree(dir_path: Path):
+    """Get the tree structure of a directory."""
     return '\n'.join([line for line in tree(dir_path)])
+
+
+def get_project_tree():
+    """Get the tree structure of the project root directory."""
+    return get_tree(get_project_root_path())

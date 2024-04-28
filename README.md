@@ -36,8 +36,8 @@ python3 -m build
 # deactivate venv (or run the next command in a new terminal)
 deactivate
 
-# install the tilda package on your machine
-pipx install . --upgrade
+# install the tilda package in edit mode for development
+pipx install -e .
 
 tilda terminal "say hello"
 ```

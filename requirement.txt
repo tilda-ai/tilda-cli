@@ -35,7 +35,7 @@ google-api-core==2.18.0
     #   google-ai-generativelanguage
     #   google-api-python-client
     #   google-generativeai
-google-api-python-client==2.126.0
+google-api-python-client==2.127.0
     # via google-generativeai
 google-auth==2.29.0
     # via
@@ -109,7 +109,7 @@ pyasn1==0.6.0
     #   rsa
 pyasn1-modules==0.4.0
     # via google-auth
-pydantic==2.7.0
+pydantic==2.7.1
     # via
     #   anthropic
     #   google-generativeai
@@ -117,13 +117,13 @@ pydantic==2.7.0
     #   mistralai
     #   openai
     #   sqlmodel
-pydantic-core==2.18.1
+pydantic-core==2.18.2
     # via pydantic
 pyparsing==3.1.2
     # via httplib2
 pyyaml==6.0.1
     # via huggingface-hub
-regex==2024.4.16
+regex==2024.4.28
     # via tiktoken
 requests==2.31.0
     # via
@@ -165,3 +165,4 @@ uritemplate==4.1.1
     # via google-api-python-client
 urllib3==2.2.1
     # via requests
+watchdog==4.0.0

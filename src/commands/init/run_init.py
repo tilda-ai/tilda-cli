@@ -1,9 +1,9 @@
 # src/commands/run_init.py
 import logging
-import os
+from pathlib import Path
 
 from .scripts import configure_cmd_real_time_history, touch_tildaconfig
-from src.utils import append_to_file, get_project_root_path
+from src.utils import append_to_file
 
 
 def run_init(args):
@@ -15,7 +15,7 @@ def run_init(args):
     # print welcome message
     logging.info("Welcome to Tilda! An AI command-line tool for developers.")
 
-    root_path = os.getcwd()
+    root_path = Path.cwd()
     
     # create a tildaconfig.toml file if it does not exist
     touch_tildaconfig(root_path)

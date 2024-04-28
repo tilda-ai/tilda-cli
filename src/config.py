@@ -4,7 +4,6 @@ import toml
 import os
 import tiktoken
 
-from src.utils import get_project_config_files, get_tree, read_cmd_history
 class Config:
     _instance = None
     def __new__(cls):
@@ -19,23 +18,8 @@ class Config:
     def get_config(self):
         return self.config
     
-    def get_user_os(self):
-        return os.name
-    
-    def get_project_tree(self):
-        return get_tree(Path.cwd())
-    
     def get_dev_env_context(self):
         return json.dumps(self.config["dev_env_context"], indent=4)
-
-    def get_project_config_files(self):
-        return get_project_config_files(Path.cwd())
-
-    def get_working_directory(self):
-        return Path.cwd()
-    
-    def get_commands_history(self):
-        return read_cmd_history()
 
     def get_ollama_api_endpoint(self):
         return self.config["api_endpoints"]["ollama"]

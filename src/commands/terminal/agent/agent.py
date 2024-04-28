@@ -1,10 +1,11 @@
 import datetime
+import os
 from pathlib import Path
 
-from ..types import TerminalCommandArgs
 from src.config import Config
 from src.llms import LLM
-from src.utils import get_jinja_env, get_project_root_path
+from src.utils import get_jinja_env, get_project_config_files, get_project_root_path, get_project_root_folder_name, get_reducted_path, read_cmd_history, get_project_tree
+from ..types import TerminalCommandArgs
 
 
 class TerminalAgent:
@@ -17,14 +18,14 @@ class TerminalAgent:
     def render(self, args: TerminalCommandArgs) -> str:
         rendered_prompt = self.template.render(
             prompt=args.prompt, 
-            scope=args.scope,
-            user_os=self.config.get_user_os(),
-            project_tree=self.config.get_project_tree(),
+            user_os=os.name,
             dev_env_context=self.config.get_dev_env_context(),
-            project_config_files=self.config.get_project_config_files(),
-            working_directory=self.config.get_working_directory(),
-            commands_history=self.config.get_commands_history(),
-            project_root='tilda',
+            project_tree=get_project_tree(),
+            project_config_files=get_project_config_files(),
+            working_directory=get_reducted_path(Path.cwd()),
+            commands_history=read_cmd_history(),
+            project_root_folder_name=get_project_root_folder_name(),
+            project_root_path=get_reducted_path(get_project_root_path()),
             current_date=datetime.date.today().strftime('%Y-%m-%d')
         )
 
@@ -33,7 +34,7 @@ class TerminalAgent:
         # TODO: enable only in debug mode
         # TODO: extract logging to a separate module
         # TODO: extract the logs directory to a config file
-        logs_dir = Path(get_project_root_path(Path.cwd())) / '.tilda' / 'logs'
+        logs_dir = Path(get_project_root_path()) / '.tilda' / 'logs'
         logs_dir.mkdir(parents=True, exist_ok=True)
         with open(logs_dir / 'command-terminal-prompt.md', 'w', encoding="utf-8") as file:
             file.write(rendered_prompt)
@@ -41,7 +42,11 @@ class TerminalAgent:
         return rendered_prompt
 
     def execute(self, args: TerminalCommandArgs) -> str:
-        prompt = self.render(args)
-        response = self.llm.inference(prompt, self.tokenizer)
+        rendered_prompt = self.render(args)
+        
+        if args.dry:
+            return 'No inference made. Dry run mode.'
+        
+        response = self.llm.inference(rendered_prompt, self.tokenizer)
 
         return response

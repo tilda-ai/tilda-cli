@@ -11,7 +11,7 @@ def configure_parser():
     """Configure and return the main argument parser with subparsers for commands."""
     parser = argparse.ArgumentParser(description="The AI CLI")
     parent_parser = argparse.ArgumentParser(add_help=False)
-    parent_parser.add_argument('--scope', action='store_true', help="Execute the command in specific scope.")
+    parent_parser.add_argument('--dry', action='store_true', help="Execute the command in dry mode (without model inference).")
     
     # Subparser setup
     subparsers = parser.add_subparsers(dest='subcommand', required=True, help='Sub-command help')

@@ -10,3 +10,4 @@ openai==1.21.2
 sqlmodel==0.0.16
 tiktoken==0.6.0
 toml==0.10.2
+watchdog==4.0.0
