@@ -1,6 +1,7 @@
-import logging
 import os
 from subprocess import CalledProcessError, call
+
+from src.logger import logger
 
 from .file_system import backup_file, restore_file_from_backup, get_user_home_directory
 from .user_interactions import user_confirmation
@@ -12,7 +13,7 @@ def validate_shell_script(shell_path, shell):
         return_code = call(command, shell=True)
         return return_code == 0
     except CalledProcessError as e:
-        logging.error(f"Shell script validation failed: {e}")
+        logger.error(f"Shell script validation failed: {e}")
         return False
 
 def append_script_to_shell_rc(shell, script, user_confirmation_prompt):
@@ -20,12 +21,12 @@ def append_script_to_shell_rc(shell, script, user_confirmation_prompt):
     home = get_user_home_directory()
     shell_rc_path = os.path.join(home, f".{shell}rc")
     if not os.path.exists(shell_rc_path):
-        logging.warning(f"{shell}rc does not exist; skipping modifications.")
+        logger.warning(f"{shell}rc does not exist; skipping modifications.")
         return
 
-    logging.info(f"Ready to modify {shell}rc with new settings.")
+    logger.info(f"Ready to modify {shell}rc with new settings.")
     if not user_confirmation(user_confirmation_prompt):
-        logging.info("Changes canceled by user.")
+        logger.info("Changes canceled by user.")
         return
 
     backup_file(shell_rc_path)
@@ -33,15 +34,15 @@ def append_script_to_shell_rc(shell, script, user_confirmation_prompt):
         with open(shell_rc_path, 'r+', encoding="utf-8") as file:
             content = file.read()
             if script.strip() in content:
-                logging.info(f"Changes are already applied in {shell}rc")
+                logger.info(f"Changes are already applied in {shell}rc")
                 return
             file.write(script)
-            logging.info(f"Changes were appended to {shell}rc")
+            logger.info(f"Changes were appended to {shell}rc")
     except IOError as e:
-        logging.error(f"Failed to modify {shell}rc: {e}")
+        logger.error(f"Failed to modify {shell}rc: {e}")
         restore_file_from_backup(shell_rc_path)
 
     if not validate_shell_script(shell_rc_path, shell):
-        logging.error(f"Error: {shell}rc has syntax errors after appending rt_history_script.")
-        logging.info("Restoring from backup...")
+        logger.error(f"Error: {shell}rc has syntax errors after appending rt_history_script.")
+        logger.info("Restoring from backup...")
         restore_file_from_backup(shell_rc_path)

@@ -1,5 +1,4 @@
-import logging
-
+from src.logger import logger
 from .ollama_client import Ollama
 from .claude_client import Claude
 from .openai_client import OpenAi
@@ -76,7 +75,7 @@ class LLM:
         # Get the model enum from the model id
         model_enum = self.model_id_to_enum_mapping().get(self.model_id)
         
-        logging.debug(f"Model: {self.model_id}, Enum: {model_enum}")
+        logger.debug(f"Model: {self.model_id}, Enum: {model_enum}")
         
         if model_enum is None:
             raise ValueError(f"Model {self.model_id} not supported")
@@ -96,7 +95,7 @@ class LLM:
         except KeyError:
             raise ValueError(f"Model {model_enum} not supported")
 
-        logging.debug(f"Response ({model}): --> {response}")
+        logger.debug(f"Response ({model}): --> {response}")
 
         self.update_global_token_usage(response, tokenizer)
 

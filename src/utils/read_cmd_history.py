@@ -1,5 +1,6 @@
 import os
-import logging
+
+from src.logger import logger
 
 from .file_system import get_user_home_directory
 from .get_user_shell import get_user_shell
@@ -17,7 +18,7 @@ def get_history_file_path():
 
 def read_last_commands(history_file, num_commands=10):
     if not history_file:
-        logging.info("Unsupported shell for history retrieval.")
+        logger.info("Unsupported shell for history retrieval.")
         return "Unsupported shell for history retrieval."
 
     try:
@@ -26,10 +27,10 @@ def read_last_commands(history_file, num_commands=10):
             history = file.readlines()[-num_commands:]
         return history
     except FileNotFoundError:
-        logging.error(f"History file not found: {history_file}")
+        logger.error(f"History file not found: {history_file}")
         return "History file not found."
     except Exception as e:
-        logging.exception("An unexpected error occurred.")
+        logger.exception("An unexpected error occurred.")
         return f"An error occurred: {str(e)}"
 
 def read_cmd_history():

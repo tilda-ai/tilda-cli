@@ -1,6 +1,6 @@
 import os
-import logging
 
+from src.logger import logger
 from src.utils import append_script_to_shell_rc, get_user_shell
 
 # Define user confirmation prompt
@@ -72,4 +72,4 @@ def configure_cmd_real_time_history():
     if rt_history_script:
         append_script_to_shell_rc(shell, rt_history_script, user_confirmation_prompt)
     else:
-        logging.info(f"No specific configuration available for {shell}. Skipping modifications.")
+        logger.info(f"No specific configuration available for {shell}. Skipping modifications.")

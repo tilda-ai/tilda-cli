@@ -1,5 +1,5 @@
-import logging
 import os
+from src.logger import logger
 from src.utils import get_jinja_env
 
 
@@ -13,4 +13,4 @@ def touch_tildaconfig(base_path: str):
         with open(config_path, "w", encoding="utf-8") as file:
 
             file.write(sample_config)
-        logging.info("tildaconfig.toml created successfully.")
+        logger.info("tildaconfig.toml created successfully.")

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import logging
+from .logger import logger
 
-# Set up default logging for the entire package
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
+logger.setLevel(logging.INFO)

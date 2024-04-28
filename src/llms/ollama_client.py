@@ -1,6 +1,6 @@
-import logging
 import ollama
 
+from src.logger import logger
 from src.config import Config
 
 
@@ -10,11 +10,11 @@ class Ollama:
             config = Config()
             self.client = ollama.Client(config.get_ollama_api_endpoint())
             self.models = self.client.list()["models"]
-            logging.info("Ollama available")
+            logger.info("Ollama available")
         except:
             self.client = None
-            logging.warning("Ollama not available")
-            logging.warning("run ollama server to use ollama models otherwise use other models")
+            logger.warning("Ollama not available")
+            logger.warning("run ollama server to use ollama models otherwise use other models")
 
     def inference(self, model_id: str, prompt: str) -> str:
         response = self.client.generate(

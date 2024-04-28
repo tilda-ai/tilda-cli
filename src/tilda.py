@@ -2,8 +2,8 @@
 
 import argparse
 import sys
-import logging
 
+from src.logger import logger
 from src.commands import commands
 
 
@@ -33,5 +33,5 @@ def main():
     if args.subcommand:
         commands[args.subcommand]['function'](args)
     else:
-        logging.error("Unknown command")
+        logger.error("Unknown command")
         sys.exit(1)
