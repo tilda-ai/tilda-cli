@@ -14,3 +14,5 @@ def touch_tildaconfig(base_path: str):
 
             file.write(sample_config)
         logger.info("tildaconfig.toml created successfully.")
+        
+       
