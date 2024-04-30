@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Provider(Enum):
+class LLMProviders(Enum):
     OPENAI="OpenAI"
     CLAUDE="Claude"
     GEMINI="Gemini"

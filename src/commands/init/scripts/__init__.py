@@ -1,2 +1,4 @@
 from .configure_cmd_real_time_history import configure_cmd_real_time_history
 from .touch_tildaconfig import touch_tildaconfig
+from .update_tildaconfig import update_tildaconfig
+from .setup_llm_provider_api_key_configuration import setup_llm_provider_api_key_configuration
