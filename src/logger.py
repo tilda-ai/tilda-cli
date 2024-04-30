@@ -23,10 +23,12 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
     
 logger = logging.getLogger("tilda")
+logger.setLevel(logging.INFO)
 
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 
 ch.setFormatter(CustomFormatter())
 
 logger.addHandler(ch)
+
