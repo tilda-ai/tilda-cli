@@ -33,14 +33,14 @@ def get_provider_key_placeholder(provider: LLMProviders):
     return switcher.get(provider, "Invalid provider")
 
 def select_llm_provider_prompt():
-    choices = [provider.value for provider in LLMProviders] + ["Skip"]
-    questions = [{"type": "list", "name": "option", "message": "Please choose an option:", "choices": choices}]
-    response = prompt(questions)
-    return response["option"]
+    llm_providers = [provider.value for provider in LLMProviders] + ["Skip"]
+    llm_provdider_select_menu = [{"type": "list", "name": "provider", "message": "Please choose an option:", "choices": llm_providers}]
+    response = prompt(llm_provdider_select_menu)
+    return response["provider"]
 
 def set_provider_api_key_prompt():
-    questions = [{'type': 'password', 'message': 'Please enter API key:', 'name': 'api_key'}]
-    response = prompt(questions)
+    api_key_user_input = [{'type': 'password', 'name': 'api_key', 'message': 'Please enter API key:'}]
+    response = prompt(api_key_user_input)
     if not response['api_key']:
         logger.error("API key cannot be empty.")
         raise ValueError("API key cannot be empty.")
