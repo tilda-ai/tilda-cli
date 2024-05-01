@@ -23,8 +23,9 @@ def run_init(args):
 
     # add tildaconfig.toml to .gitignore
     append_to_file(f"{current_directory_path}/.gitignore", "\n\ntildaconfig.toml\n\n")
-    
-    setup_llm_provider_api_key_configuration(current_directory_path)
+        
+    result = setup_llm_provider_api_key_configuration(current_directory_path)
+    print(result)
     
     # configure shell command output logger
     configure_cmd_real_time_history()

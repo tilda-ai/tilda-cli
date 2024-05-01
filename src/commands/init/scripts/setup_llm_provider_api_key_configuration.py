@@ -6,22 +6,29 @@ from ..enums.llm_providers import LLMProviders
 from .update_tildaconfig import update_tildaconfig
 
 def setup_llm_provider_api_key_configuration(current_directory_path: Path):
-    if not current_directory_path.exists():
-        logger.error("The directory [%s] does not exist.", current_directory_path)
-        raise FileNotFoundError(f"The directory {current_directory_path} does not exist.")
-    
-    llm_provider = select_llm_provider_prompt()
-    if llm_provider == "Skip":
-        logger.info("Skipping API key configuration.")
-        return
-    
-    placeholder_pattern = get_provider_key_placeholder(llm_provider)
-    if placeholder_pattern == "Invalid provider":
-        logger.error("Selected an invalid LLM provider.")
-        raise ValueError("Invalid LLM provider selected.")
-    
-    provider_api_key = set_provider_api_key_prompt()
-    update_tildaconfig(current_directory_path, placeholder_pattern, provider_api_key)
+    try:
+        if not current_directory_path.exists():
+            logger.error("The directory %s does not exist.", current_directory_path)
+            return "Directory not found. Please check the path."
+
+        llm_provider = select_llm_provider_prompt()
+        if llm_provider == "Skip":
+            logger.info("Skipping API key configuration.")
+            return "Operation skipped by the user."
+
+        placeholder_pattern = get_provider_key_placeholder(llm_provider)
+        if placeholder_pattern == "Invalid provider":
+            logger.error("Selected an invalid LLM provider.")
+            return "Invalid LLM provider selected. Please select a valid provider."
+
+        provider_api_key = set_provider_api_key_prompt()
+        update_tildaconfig(current_directory_path, placeholder_pattern, provider_api_key)
+        logger.info("Configuration updated successfully.")
+        return "Configuration updated successfully."
+
+    except Exception as e:
+        logger.error("An unexpected error occurred: %s", str(e))
+        return f"An unexpected error occurred: {str(e)}"
 
 def get_provider_key_placeholder(provider: LLMProviders):
     switcher = {
