@@ -21,14 +21,13 @@ class CustomFormatter(logging.Formatter):
         log_fmt = self.FORMATS.get(record.levelno)
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
-    
+
 logger = logging.getLogger("tilda")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.NOTSET)
 
 ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
+ch.setLevel(logging.NOTSET)
 
 ch.setFormatter(CustomFormatter())
 
 logger.addHandler(ch)
-

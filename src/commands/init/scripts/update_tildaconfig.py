@@ -1,6 +1,6 @@
 import os
 
-from src import logger
+from src.logger import logger
 
 
 def update_tildaconfig(current_directory_path: str, placeholder_pattern: str, value: str):

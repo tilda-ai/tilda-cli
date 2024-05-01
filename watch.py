@@ -1,42 +1,50 @@
 import time
 import subprocess
 import threading
+import pathspec
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+def load_gitignore():
+    """Load and parse the .gitignore file, returning a pathspec."""
+    with open('.gitignore', 'r', encoding='utf-8') as file:
+        spec = pathspec.PathSpec.from_lines('gitwildmatch', file)
+    return spec
+
 class DebouncedBuilder(FileSystemEventHandler):
-    """Handler that debounces build triggers."""
+    """Handler that debounces build triggers, ignoring .gitignore files."""
     def __init__(self, cooldown=5):
         self.cooldown = cooldown
-        self.last_scheduled = 0
-        self.debounced_event = threading.Event()
-        self.debounced_thread = threading.Thread(target=self.process_event)
-        self.debounced_thread.start()
+        self.gitignore_spec = load_gitignore()
+        self.timer = None
+        self.lock = threading.Lock()
+
+    def should_ignore(self, path):
+        """Check if the path should be ignored based on the .gitignore rules."""
+        return self.gitignore_spec.match_file(path)
 
     def process_event(self):
-        while True:
-            self.debounced_event.wait()
-            self.debounced_event.clear()
-            time_now = time.time()
-            if time_now - self.last_scheduled > self.cooldown:
-                self.last_scheduled = time_now
-                # Call the build command
-                print("Building project...")
-                subprocess.run(["python3", "-m", "build"])
-                time.sleep(self.cooldown)
+        print("Building project...")
+        subprocess.run(["python3", "-m", "build"])
 
     def on_any_event(self, event):
-        """Triggered on any file system event."""
-        self.debounced_event.set()
+        if self.should_ignore(event.src_path):
+            return
+
+        with self.lock:
+            if self.timer is not None:
+                self.timer.cancel()
+            self.timer = threading.Timer(self.cooldown, self.process_event)
+            self.timer.start()
 
 if __name__ == "__main__":
-    path = "./src"  # Path to watch
+    WATCH_PATH = "./src"  # Path to watch
     event_handler = DebouncedBuilder()
     observer = Observer()
-    observer.schedule(event_handler, path, recursive=True)
+    observer.schedule(event_handler, WATCH_PATH, recursive=True)
     observer.start()
-    print(f"Watching {path} for changes...")
+    print(f"Watching {WATCH_PATH} for changes...")
     try:
         while True:
             time.sleep(1)

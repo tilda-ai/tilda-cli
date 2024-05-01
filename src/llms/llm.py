@@ -6,15 +6,10 @@ from .gemini_client import Gemini
 from .mistral_client import MistralAi
 from .groq_client import Groq
 
-# from src.state import State
-# state = State()
-
-ollama = Ollama()
-
 class LLM:
     def __init__(self, model_id: str = None):
         self.model_id = model_id
-        
+
         self.models = {
             "CLAUDE": [
                 ("Claude 3 Opus", "claude-3-opus-20240229"),
@@ -49,10 +44,6 @@ class LLM:
             # ]
         }
 
-        if ollama.client:
-            self.models["OLLAMA"] = [(model["name"].split(":")[0], model["name"]) for model in
-                                     ollama.models]
-
     def list_models(self) -> dict:
         return self.models
 
@@ -65,23 +56,17 @@ class LLM:
 
     @staticmethod
     def update_global_token_usage(string: str, tokenizer):
-        token_usage = len(tokenizer.encode(string))
+        # token_usage = len(tokenizer.encode(string))
+        # TODO: Implement token usage state
         # state.update_token_usage(token_usage)
         pass
 
     def inference(self, prompt: str, tokenizer) -> str:
         # Update global token usage
         self.update_global_token_usage(prompt, tokenizer)
-        # Get the model enum from the model id
-        model_enum = self.model_id_to_enum_mapping().get(self.model_id)
-        
-        logger.debug(f"Model: {self.model_id}, Enum: {model_enum}")
-        
-        if model_enum is None:
-            raise ValueError(f"Model {self.model_id} not supported")
 
         model_mapping = {
-            "OLLAMA": ollama,
+            "OLLAMA": Ollama(),
             "CLAUDE": Claude(),
             "OPENAI": OpenAi(),
             "GOOGLE": Gemini(),
@@ -89,13 +74,26 @@ class LLM:
             "GROQ": Groq()
         }
 
+        ollama = model_mapping.get("OLLAMA")
+
+        if ollama.client:
+            self.models["OLLAMA"] = [(model["name"].split(":")[0], model["name"]) for model in ollama.models]
+
+        # Get the model enum from the model id
+        model_enum = self.model_id_to_enum_mapping().get(self.model_id)
+
+        logger.debug("Model: %s, Enum: %s", self.model_id, model_enum)
+
+        if model_enum is None:
+            raise ValueError(f"Model {self.model_id} not supported")
+
         try:
             model = model_mapping[model_enum]
             response = model.inference(self.model_id, prompt).strip()
-        except KeyError:
-            raise ValueError(f"Model {model_enum} not supported")
+        except KeyError as exc:
+            raise ValueError(f"Model {model_enum} not supported") from exc
 
-        logger.debug(f"Response ({model}): --> {response}")
+        logger.debug("Response (%s): --> %s", model, response)
 
         self.update_global_token_usage(response, tokenizer)
 

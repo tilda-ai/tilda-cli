@@ -11,7 +11,7 @@ class Ollama:
             self.client = ollama.Client(config.get_ollama_api_endpoint())
             self.models = self.client.list()["models"]
             logger.info("Ollama available")
-        except:
+        except Exception:
             self.client = None
             logger.warning("Ollama not available")
             logger.warning("run ollama server to use ollama models otherwise use other models")
