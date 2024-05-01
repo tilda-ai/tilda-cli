@@ -46,9 +46,14 @@ def select_llm_provider_prompt():
     return response["provider"]
 
 def set_provider_api_key_prompt():
-    api_key_user_input = [{'type': 'password', 'name': 'api_key', 'message': 'Please enter API key:'}]
-    response = prompt(api_key_user_input)
-    if not response['api_key']:
-        logger.error("API key cannot be empty.")
-        raise ValueError("API key cannot be empty.")
-    return response['api_key']
+    while True:  # Start a loop to keep asking until a valid input or 'skip'
+        api_key_user_input = [{'type': 'password', 'name': 'api_key', 'message': 'Please enter API key (or type "skip" to skip):'}]
+        response = prompt(api_key_user_input)
+        if response['api_key'].strip().lower() == 'skip':  # Check if user types 'skip'
+            logger.info("User chose to skip API key input.")
+            return None  # Return None or another specific value to indicate skipping
+        elif not response['api_key'].strip():  # Check if input is empty
+            logger.error("API key cannot be empty.")
+            print("API key cannot be empty. Please enter a valid API key or type 'skip' to skip.")
+        else:
+            return response['api_key']  # Return the API key if it's valid
