@@ -1,10 +1,13 @@
 import datetime
 import os
 from pathlib import Path
+import sys
+import json
 
 from src.config import Config
 from src.llms import LLM
 from src.utils import get_jinja_env, get_project_config_files, get_project_root_path, get_project_root_folder_name, get_reducted_path, read_cmd_history, get_project_tree
+from src.common import print_error
 from ..types import TerminalCommandArgs
 
 
@@ -17,7 +20,7 @@ class TerminalAgent:
 
     def render(self, args: TerminalCommandArgs) -> str:
         rendered_prompt = self.template.render(
-            prompt=args.prompt, 
+            prompt=args.prompt,
             user_os=os.name,
             dev_env_context=self.config.get_dev_env_context(),
             project_tree=get_project_tree(),
@@ -43,13 +46,19 @@ class TerminalAgent:
 
     def execute(self, args: TerminalCommandArgs) -> str:
         rendered_prompt = self.render(args)
-        
-        if args.mock:
-            return self.config.get_terminal_command_mock_response()
-        
-        if args.dry:
-            return 'No inference made. Dry run mode.'
-        
         response = self.llm.inference(rendered_prompt, self.tokenizer)
 
-        return response
+        try:
+            json_response = json.loads(response)
+            return json_response
+        except json.JSONDecodeError as error:
+            print_error(
+                error,
+                "[red]Error parsing agent response to json, [underline]please try again or check your arguments.[/underline][/red]",
+                "src/commands/terminal/agent/agent.py",
+                "TerminalAgent.execute",
+                custom_output=f"response: {response}",
+                cli_args=args,
+            )
+            #exit the script
+            sys.exit(1)

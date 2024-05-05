@@ -1,7 +1,6 @@
-# src/commands/commands.py
-
 from .init import run_init
-from .terminal import run_terminal
+from .terminal import TerminalRunner
+
 
 commands = {
     'init': {
@@ -11,7 +10,7 @@ commands = {
     },
     'terminal': {
         'help': 'Execute a specific terminal command',
-        'function': run_terminal,
+        'function': TerminalRunner().run_terminal,
         'args': {'prompt': {'help': 'a prompt describing the terminal command to execute'}}
     },
 }

@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
-
 import argparse
 import sys
 
-from src.logger import logger
 from src.commands import commands
-
 
 def configure_parser():
     """Configure and return the main argument parser with subparsers for commands."""
     parser = argparse.ArgumentParser(description="The AI CLI")
     parent_parser = argparse.ArgumentParser(add_help=False)
-    parent_parser.add_argument('--dry', action='store_true', help="Execute the command in dry mode (without model inference).")
-    parent_parser.add_argument('--mock', action='store_true', help="Respond with mock data found in .tilda/mock_responses/<COMMAND_NAME>.json")
-    
+    parent_parser.add_argument(
+        '--dry',
+        action='store_true',
+        help="Execute the command in dry mode (without model inference)."
+    )
+    parent_parser.add_argument(
+        '--mock',
+        action='store_true',
+        help="Respond with mock data found in .tilda/mock_responses/<COMMAND_NAME>.json"
+    )
+
     # Subparser setup
     subparsers = parser.add_subparsers(dest='subcommand', required=True, help='Sub-command help')
 
@@ -31,7 +36,8 @@ def main():
 
     # Call the corresponding function based on the subcommand
     if args.subcommand:
-        commands[args.subcommand]['function'](args)
-    else:
-        logger.error("Unknown command")
-        sys.exit(1)
+        try:
+            commands[args.subcommand]['function'](args)
+        except KeyboardInterrupt:
+            print("\033[1;32m\nKeyboardInterrupt received! Cleaning up and exiting.\033[0m")
+            sys.exit(0)

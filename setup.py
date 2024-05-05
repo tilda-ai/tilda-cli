@@ -12,7 +12,6 @@ setup(
     },
     include_package_data=True,
     install_requires=[
-        'inquirerpy==0.3.4',
         'argparse==1.4.0',
         'logging==0.4.9.6',
         'anthropic==0.25.5',
@@ -25,10 +24,13 @@ setup(
         'sqlmodel==0.0.16',
         'tiktoken==0.6.0',
         'toml==0.10.2',
+        'inquirerpy==0.3.4',
+        'rich==13.7.1',
+        'prompt-toolkit==3.0.43',
     ],
     entry_points={
         'console_scripts': [
-            'tilda=src.tilda:main',
+            'tilda=src.cli:main',
         ],
     },
     author='tilda.ai',
