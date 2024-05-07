@@ -2,7 +2,6 @@ from pathlib import Path
 
 from .get_project_root import get_project_root_path
 
-
 def get_file_project_path(file_path: Path) -> Path:
     current_dir = Path.cwd()
     project_root = get_project_root_path()

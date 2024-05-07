@@ -1,7 +1,9 @@
 import logging
+from src.common.thread_safe_singleton import ThreadSafeSingleton
 
+#TODO: implement dymamic logger name
+# gpt-conversation: https://chat.openai.com/share/79071939-4f59-4e30-a0e9-b3efedbcb0af
 class CustomFormatter(logging.Formatter):
-
     grey = "\x1b[38;20m"
     yellow = "\x1b[33;20m"
     red = "\x1b[31;20m"
@@ -22,12 +24,15 @@ class CustomFormatter(logging.Formatter):
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
-logger = logging.getLogger("tilda")
-logger.setLevel(logging.NOTSET)
+class Logger(metaclass=ThreadSafeSingleton):
+    def __init__(self):
+        self.logger = logging.getLogger("tilda")
+        self.logger.setLevel(logging.NOTSET)
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.NOTSET)
+        ch.setFormatter(CustomFormatter())
+        self.logger.addHandler(ch)
 
-ch = logging.StreamHandler()
-ch.setLevel(logging.NOTSET)
+    def get_logger(self):
+        return self.logger
 
-ch.setFormatter(CustomFormatter())
-
-logger.addHandler(ch)

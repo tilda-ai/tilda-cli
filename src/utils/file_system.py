@@ -2,7 +2,9 @@ from fnmatch import fnmatch
 import os
 import shutil
 
-from src.logger import logger
+from src.logger import Logger
+
+logger = Logger().get_logger()
 
 def get_user_home_directory():
     return os.path.expanduser('~')

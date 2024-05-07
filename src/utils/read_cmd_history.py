@@ -1,10 +1,11 @@
 import os
 
-from src.logger import logger
+from src.logger import Logger
 
 from .file_system import get_user_home_directory
 from .get_user_shell import get_user_shell
 
+logger = Logger().get_logger()
 
 def get_history_file_path():
     home = get_user_home_directory()

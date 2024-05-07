@@ -5,37 +5,36 @@ import sys
 
 from rich.console import Console
 
-from src.logger import logger
+from src.logger import Logger
 from src.config import Config
-from src.common import SingletonMeta
+
 from .agent import TerminalAgent
 from .types import TerminalCommandArgs
-from .tui import print_command, prompt_command_action, prompt_error_resolution, print_command_output, print_command_error
+from .tui.print_command import print_command
+from .tui.prompt_command_action import prompt_command_action
+from .tui.prompt_error_resolution import prompt_error_resolution
+from .tui.print_command_output import print_command_output
+from .tui.print_command_error import print_command_error
 
-class TerminalRunner(metaclass=SingletonMeta):
+class TerminalCommandRunner:
     def __init__(self):
         self.console = Console()
         self.config = Config()
+        self.logger = Logger().get_logger()
 
-    def run_terminal(self, args: TerminalCommandArgs):
-        logger.info("[run_terminal]: Running tilda terminal agent with args %s", args)
-
-        if args.dry:
-            self.console.print('[bold]Dry-run mode enabled, no inference made.[/bold]')
-            return
+    def run(self, args: TerminalCommandArgs):
+        self.logger.info("[run_terminal]: Running tilda terminal agent with args %s", args)
 
         if args.mock:
             with self.console.status("[bold green]Processing...[/bold green]", spinner="dots"):
                 time.sleep(1)
                 commands = json.loads(self.config.get_terminal_command_mock_response())
         else:
-            # execute terminal agent inference to generate commands
-            with self.console.status("[bold green]Processing...[/bold green]", spinner="dots"):
-                commands = TerminalAgent().execute(args)
+            commands = TerminalAgent().execute(args)
 
-        self.render_commands(commands)
+        self.render(commands)
 
-    def render_commands(self, commands):
+    def render(self, commands):
         for command in sorted(commands, key=lambda x: x['executionOrder']):
             self.console.print()
             print_command(command, len(commands))
@@ -50,10 +49,6 @@ class TerminalRunner(metaclass=SingletonMeta):
             
             if action == 'Explain':
                 self.console.print("[grey50]└── Command explain feature not yet implemented.[/grey50]")
-                continue
-                
-            if action == 'Skip':
-                self.console.print("[grey50]└── Command skipped.[/grey50]")
                 continue
 
             if action == 'Terminate':
@@ -80,13 +75,8 @@ class TerminalRunner(metaclass=SingletonMeta):
                 manual_command = self.console.input("[grey50][Insert command manually]:[/grey50]\n[deep_sky_blue1]❯_[/deep_sky_blue1] ")
                 # Run the manual command
                 self.run_command(manual_command, is_last)
-            
-            if resolution == 'Skip':
-                self.console.print("[grey50]└── Resolution skipped.[/grey50]")
-                # if is_last:
-                #     self.console.print("\n[green bold]Process Completed.[/green bold]")
-                return
                 
             elif resolution == 'Terminate':
+                self.console.print("[grey50]└── Terminating...[/grey50]")
                 self.console.print("\n[green bold]Process Terminated.[/green bold]")
                 sys.exit(1)

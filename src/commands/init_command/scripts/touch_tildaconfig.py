@@ -1,5 +1,4 @@
 import os
-from src.logger import logger
 from src.utils import get_jinja_env
 
 
@@ -8,11 +7,11 @@ def touch_tildaconfig(base_path: str):
     if not os.path.exists(config_path):
         env = get_jinja_env()
 
-        sample_config = env.get_template('init/tildaconfig.jinja2').render()
+        sample_config = env.get_template('init_command/templates/tildaconfig.jinja2').render()
         # save the sample config to tildaconfig.toml
         with open(config_path, "w", encoding="utf-8") as file:
 
             file.write(sample_config)
-        logger.info("tildaconfig.toml created successfully.")
+        return {"status": "success", "message": "tildaconfig.toml created successfully."}
         
        

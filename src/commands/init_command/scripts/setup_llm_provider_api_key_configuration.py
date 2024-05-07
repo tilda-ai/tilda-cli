@@ -1,9 +1,11 @@
 from pathlib import Path
 from InquirerPy import prompt
 
-from src.logger import logger
-from ..enums.llm_providers import LLMProviders
+from src.logger import Logger
+from ..types import LLMProviders
 from .update_tildaconfig import update_tildaconfig
+
+logger = Logger().get_logger()
 
 def setup_llm_provider_api_key_configuration(current_directory_path: Path):
     try:

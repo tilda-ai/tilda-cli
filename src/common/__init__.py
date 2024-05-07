@@ -1,2 +1,2 @@
-from .singleton_meta import SingletonMeta
+from .thread_safe_singleton import ThreadSafeSingleton
 from .print_error import print_error

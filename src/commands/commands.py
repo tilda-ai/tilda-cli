@@ -1,16 +1,15 @@
-from .init import run_init
-from .terminal import TerminalRunner
-
+from .init_command.runner import InitCommandRunner
+from .terminal_command.runner import TerminalCommandRunner
 
 commands = {
     'init': {
         'help': 'Inits the tilda cli in the current directory',
-        'function': run_init,
+        'function': InitCommandRunner().run,
         'args': {'--sync': {'help': 'run the init command in sync mode'}}
     },
     'terminal': {
         'help': 'Execute a specific terminal command',
-        'function': TerminalRunner().run_terminal,
+        'function': TerminalCommandRunner().run,
         'args': {'prompt': {'help': 'a prompt describing the terminal command to execute'}}
     },
 }

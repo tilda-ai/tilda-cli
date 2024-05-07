@@ -1,7 +1,9 @@
 import os
 import subprocess
 
-from src.logger import logger
+from src.logger import Logger
+
+logger = Logger().get_logger()
 
 def get_shell_from_env():
     """Get shell from the SHELL environment variable."""
