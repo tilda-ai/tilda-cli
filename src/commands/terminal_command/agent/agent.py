@@ -24,7 +24,6 @@ from ..types import TerminalCommandArgs
 from .tools.get_project_file_contents_tool import get_project_file_contents_tool
 from .examples import examples
 
-
 class TerminalAgent:
     def __init__(self):
         self.console = Console()
