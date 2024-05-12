@@ -2,7 +2,6 @@ import datetime
 import os
 from pathlib import Path
 import sys
-import json
 
 from rich.console import Console
 
@@ -23,6 +22,7 @@ from src.utils.write_log_file import write_log_file
 from ..types import TerminalCommandArgs
 from .tools.get_project_file_contents_tool import get_project_file_contents_tool
 from .examples import examples
+
 
 class TerminalAgent:
     def __init__(self):
@@ -64,7 +64,7 @@ class TerminalAgent:
         with self.console.status(
             "[bold green]Processing...[/bold green]", spinner="dots"
         ):
-            response = self.llm.inference(
+            inference_response = self.llm.inference(
                 model_id=self.config.get_terminal_command_base_model(),
                 messages=[
                     {
@@ -82,4 +82,4 @@ class TerminalAgent:
                 tools=[get_project_file_contents_tool],
             )
 
-        return response
+        return inference_response["choices"][0]["message"]["content"]

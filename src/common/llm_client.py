@@ -22,18 +22,17 @@ class LLMClient:
     ) -> Dict[str, str]:
         try:
             tool_choice = tool_choice if tool_choice else ("auto" if tools else None)
-            chat_completion = self.client.ChatCompletion.create(
+            inference_response = self.client.ChatCompletion.create(
                 messages=messages,
                 model=model_id,
                 response_format={"type": "json_object"},
                 tools=tools,
                 tool_choice=tool_choice,
             )
-            response_content = chat_completion["choices"][0]["message"]["content"]
             return {
                 "status": "success",
-                type: "InferenceSuccess",
-                "message": response_content,
+                "type": "InferenceSuccess",
+                "message": inference_response,
             }
         except requests.exceptions.ConnectionError:
             return {
