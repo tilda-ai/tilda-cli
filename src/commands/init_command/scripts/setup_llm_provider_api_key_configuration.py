@@ -1,7 +1,7 @@
 from pathlib import Path
 from InquirerPy import prompt
 
-from src.logger import Logger
+from src.common.logger import Logger
 from ..types import LLMProviders
 from .update_tildaconfig import update_tildaconfig
 

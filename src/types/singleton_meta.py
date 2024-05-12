@@ -1,6 +1,6 @@
 import threading
 
-class ThreadSafeSingleton(type):
+class SingletonMeta(type):
     """
     A thread-safe implementation of Singleton.
     """

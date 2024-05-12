@@ -1,5 +1,5 @@
 import logging
-from src.common.thread_safe_singleton import ThreadSafeSingleton
+from src.types.singleton_meta import SingletonMeta
 
 #TODO: implement dymamic logger name
 # gpt-conversation: https://chat.openai.com/share/79071939-4f59-4e30-a0e9-b3efedbcb0af
@@ -24,7 +24,7 @@ class CustomFormatter(logging.Formatter):
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
-class Logger(metaclass=ThreadSafeSingleton):
+class Logger(metaclass=SingletonMeta):
     def __init__(self):
         self.logger = logging.getLogger("tilda")
         self.logger.setLevel(logging.NOTSET)

@@ -1,7 +1,7 @@
 # src/commands/run_init.py
 from pathlib import Path
 
-from src.logger import Logger
+from src.common.logger import Logger
 from src.utils import append_to_file
 
 from .scripts.configure_cmd_real_time_history import configure_cmd_real_time_history
