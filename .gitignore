@@ -2,7 +2,6 @@
 tildaconfig.toml
 .tilda/
 todo.txt
-gpt-system-prompt.txt
 .vscode/
 
 # Apple files
