@@ -9,22 +9,24 @@ examples = [
         "role": "system",
         "name": "example_agent",
         "content": """
-            [
-                {
-                    "responseType": "script",
-                    "systemMessage": "Check Docker container status",
-                    "shellScript": "docker ps -a",
-                    "executionOrder": 1,
-                    "isChainable": false
-                },
-                {
-                    "responseType": "script",
-                    "systemMessage": "Restart stopped Docker containers",
-                    "shellScript": "docker restart $(docker ps -a -q -f status=exited)",
-                    "executionOrder": 2,
-                    "isChainable": false
-                }
-            ]
+            {
+                "completions": [
+                    {
+                        "responseType": "script",
+                        "systemMessage": "Check Docker container status",
+                        "shellScript": "docker ps -a",
+                        "executionOrder": 1,
+                        "isChainable": false
+                    },
+                    {
+                        "responseType": "script",
+                        "systemMessage": "Restart stopped Docker containers",
+                        "shellScript": "docker restart $(docker ps -a -q -f status=exited)",
+                        "executionOrder": 2,
+                        "isChainable": false
+                    }
+                ]
+            }
         """,
     },
     # Example 2
@@ -37,22 +39,24 @@ examples = [
         "role": "system",
         "name": "example_agent",
         "content": """
-            [
-                {
-                    "responseType": "script",
-                    "systemMessage": "Compress old log files",
-                    "shellScript": "find {{project_root_path}}/logs -mtime +30 -exec gzip {} \\;",
-                    "executionOrder": 1,
-                    "isChainable": true
-                },
-                {
-                    "responseType": "script",
-                    "systemMessage": "Move compressed logs to archive",
-                    "shellScript": "mv {{project_root_path}}/logs/*.gz {{project_root_path}}/archive/",
-                    "executionOrder": 2,
-                    "isChainable": false
-                }
-            ]
+            { 
+                "completions": [
+                    {
+                        "responseType": "script",
+                        "systemMessage": "Compress old log files",
+                        "shellScript": "find {{project_root_path}}/logs -mtime +30 -exec gzip {} \\;",
+                        "executionOrder": 1,
+                        "isChainable": true
+                    },
+                    {
+                        "responseType": "script",
+                        "systemMessage": "Move compressed logs to archive",
+                        "shellScript": "mv {{project_root_path}}/logs/*.gz {{project_root_path}}/archive/",
+                        "executionOrder": 2,
+                        "isChainable": false
+                    }
+                ]
+            }
         """,
     },
     # Example 3
@@ -65,15 +69,17 @@ examples = [
         "role": "system",
         "name": "example_agent",
         "content": """
-            [
-                {
-                    "responseType": "script",
-                    "systemMessage": "Set up cron job for clearing cache",
-                    "shellScript": "(crontab -l 2>/dev/null; echo '0 0 * * 0 rm -rf {{project_root_path}}/cache/*') | crontab -",
-                    "executionOrder": 1,
-                    "isChainable": false
-                }
-            ]
+            {
+                "completions": [
+                    {
+                        "responseType": "script",
+                        "systemMessage": "Set up cron job for clearing cache",
+                        "shellScript": "(crontab -l 2>/dev/null; echo '0 0 * * 0 rm -rf {{project_root_path}}/cache/*') | crontab -",
+                        "executionOrder": 1,
+                        "isChainable": false
+                    }
+                ]
+            }
         """,
     },
     # Example 4
@@ -86,12 +92,14 @@ examples = [
         "role": "system",
         "name": "example_agent",
         "content": """
-            [
-                {
-                    "responseType": "error",
-                    "systemMessage": "While I could prossibly provide some general tips, I am not the right agent to help with this query.",
-                }
-            ]    
+            {
+                "completions": [
+                    {
+                        "responseType": "error",
+                        "systemMessage": "While I could prossibly provide some general tips, I am not the right agent to help with this query.",
+                    }
+                ] 
+            }   
         """,
     },
     # {

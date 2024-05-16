@@ -1,10 +1,12 @@
 import datetime
+import json
 import os
 from pathlib import Path
 import sys
 
 from rich.console import Console
 
+from src.common.print_error import print_error
 from src.config import Config
 from src.common.llm_client import LLMClient
 
@@ -21,6 +23,7 @@ from src.utils.write_log_file import write_log_file
 
 from ..types import TerminalCommandArgs
 from .tools.get_project_file_contents_tool import get_project_file_contents_tool
+from .tools.command_function_tools_mapping import command_function_tools_mapping
 from .examples import examples
 
 
@@ -61,25 +64,35 @@ class TerminalAgent:
             self.console.print("[bold]Dry-run mode enabled, no inference made.[/bold]")
             sys.exit(0)
 
-        with self.console.status(
-            "[bold green]Processing...[/bold green]", spinner="dots"
-        ):
-            inference_response = self.llm.inference(
-                model_id=self.config.get_terminal_command_base_model(),
-                messages=[
-                    {
-                        "role": "system",
-                        "name": "system_prompt",
-                        "content": rendered_system_prompt,
-                    },
-                    *examples,
-                    {
-                        "role": "user",
-                        "name": "software_developer",
-                        "content": args.prompt.strip(),
-                    },
-                ],
-                tools=[get_project_file_contents_tool],
+        inference_response = self.llm.inference(
+            model_id=self.config.get_terminal_command_base_model(),
+            messages=[
+                {
+                    "role": "system",
+                    "name": "system_prompt",
+                    "content": rendered_system_prompt,
+                },
+                *examples,
+                {
+                    "role": "user",
+                    "name": "software_developer",
+                    "content": args.prompt.strip(),
+                },
+            ],
+            tools=[get_project_file_contents_tool],
+            command_function_tools_mapping=command_function_tools_mapping,
+        )
+
+        if inference_response["status"] == "error":
+            print_error(
+                title=f"[bold red]Error [{inference_response['type']}]:[/bold red]",
+                message=f"[red]{inference_response['message']}[/red]",
+                file="terminal_command/agent/agent.py",
+                operation="TerminalAgent.execute",
+                custom_output=inference_response["llm_response_message_content"],
+                cli_args=args,
             )
 
-        return inference_response["choices"][0]["message"]["content"]
+            sys.exit(1)
+
+        return json.loads(inference_response["message"]).get("completions")
