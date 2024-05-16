@@ -64,7 +64,7 @@ class TerminalAgent:
             self.console.print("[bold]Dry-run mode enabled, no inference made.[/bold]")
             sys.exit(0)
 
-        inference_response = self.llm.inference(
+        inference = self.llm.inference(
             model_id=self.config.get_terminal_command_base_model(),
             messages=[
                 {
@@ -83,16 +83,15 @@ class TerminalAgent:
             command_function_tools_mapping=command_function_tools_mapping,
         )
 
-        if inference_response["status"] == "error":
+        if inference["status"] == "error":
             print_error(
-                title=f"[bold red]Error [{inference_response['type']}]:[/bold red]",
-                message=f"[red]{inference_response['message']}[/red]",
+                title=f"[bold red]Error [{inference['type']}]:[/bold red]",
+                message=f"[red]{inference['message']}[/red]",
                 file="terminal_command/agent/agent.py",
                 operation="TerminalAgent.execute",
-                custom_output=inference_response["llm_response_message_content"],
                 cli_args=args,
             )
 
             sys.exit(1)
 
-        return json.loads(inference_response["message"]).get("completions")
+        return json.loads(inference["message"]).get("completions")

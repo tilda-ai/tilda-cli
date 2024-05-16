@@ -61,17 +61,17 @@ class LLMClient:
             return {
                 "status": "error",
                 "type": "InvalidResponse",
-                "message": "The response from the model was not a valid JSON.",
-                "llm_response_message_content": response_message.content,
+                "message": "The response from the model was not a valid JSON. \n\n"
+                + response_message.content.strip(),
             }
 
         # check if the model responded with a tool call
         if response_message.tool_calls:
-            # Step 3: call the function
+            # call the function
             messages.append(
                 response_message
             )  # extend conversation with assistant's reply
-            # Step 4: send the info for each function call and function response to the model
+            # send the info for each function call and function response to the model
             for tool_call in response_message.tool_calls:
                 function_name = tool_call.function.name
                 function_to_call = command_function_tools_mapping[function_name]
@@ -104,8 +104,8 @@ class LLMClient:
                 return {
                     "status": "error",
                     "type": "InvalidResponseWithToolCalls",
-                    "message": "The response from the model was not a valid JSON.",
-                    "llm_response_message_content": second_response_message.content,
+                    "message": "The response from the model was not a valid JSON. \n\n"
+                    + second_response_message.content.strip(),
                 }
 
         return {
