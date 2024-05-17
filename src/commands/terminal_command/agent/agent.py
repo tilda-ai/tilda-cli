@@ -31,7 +31,7 @@ class TerminalAgent:
     def __init__(self):
         self.console = Console()
         self.config = Config()
-        self.llm = LLMClient()
+        self.llm = LLMClient(command_function_tools_mapping=command_function_tools_mapping)
         self.template = get_jinja_env().get_template(
             "terminal_command/agent/system_prompt.jinja2"
         )
@@ -80,7 +80,6 @@ class TerminalAgent:
                 },
             ],
             tools=[get_project_file_contents_tool],
-            command_function_tools_mapping=command_function_tools_mapping,
         )
 
         if inference["status"] == "error":
