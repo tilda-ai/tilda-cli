@@ -81,11 +81,46 @@ class LLMClient:
                 "message": message.content,
             }
         except json.JSONDecodeError:
+            # handle duplicated response
+            deduped_response_object = self._dedupe_json_objects(message.content)
+            
+            if deduped_response_object:
+                try:
+                    json.loads(deduped_response_object)
+                    return {
+                        "status": "success",
+                        "type": response_type,
+                        "message": deduped_response_object,
+                    }
+                except json.JSONDecodeError:
+                    return {
+                        "status": "error",
+                        "type": f"Invalid{response_type}",
+                        "message": "Invalid JSON received: \n\n" + message.content.strip(),
+                    }
+                    
             return {
                 "status": "error",
-                "type": f"InvalidResponse{response_type}",
+                "type": f"Invalid{response_type}",
                 "message": "Invalid JSON received: \n\n" + message.content.strip(),
             }
+
+    def _dedupe_json_objects(input_string) -> str | None:
+        try: 
+            # Replace all line breaks with spaces
+            text = input_string.replace('\n', ' ')
+            
+            # Split the string by whitespace and then join with a single space
+            clean_text = ' '.join(text.split())
+
+            sprinkled_text = clean_text.replace('} {', '}~~!~~{')
+            
+            # Split the cleaned string into separate JSON objects
+            json_objects = sprinkled_text.split('~~!~~')
+
+            return json_objects[0]
+        except Exception as e:
+            return None
 
     def _handle_exception(self, e):
         if isinstance(e, requests.exceptions.HTTPError):

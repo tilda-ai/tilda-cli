@@ -17,7 +17,7 @@ def get_history_file_path():
     user_shell = get_user_shell()
     return history_files_map.get(user_shell)
 
-def read_last_commands(history_file, num_commands=10):
+def read_last_commands(history_file, num_commands=30):
     if not history_file:
         logger.info("Unsupported shell for history retrieval.")
         return "Unsupported shell for history retrieval."
@@ -31,7 +31,7 @@ def read_last_commands(history_file, num_commands=10):
         logger.error(f"History file not found: {history_file}")
         return "History file not found."
     except Exception as e:
-        logger.exception("An unexpected error occurred.")
+        logger.error("An unexpected error occurred.")
         return f"An error occurred: {str(e)}"
 
 def read_cmd_history():

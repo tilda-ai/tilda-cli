@@ -54,6 +54,12 @@ class TerminalCommandRunner:
                     is_last=command["executionOrder"] == len(commands),
                 )
 
+            if action == "Skip":
+                self.console.print(
+                    "[grey50]└── Command skipped.[/grey50]"
+                )
+                continue
+
             if action == "Edit":
                 self.console.print(
                     "[grey50]└── Command edit feature not yet implemented.[/grey50]"
