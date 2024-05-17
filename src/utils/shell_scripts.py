@@ -6,7 +6,7 @@ from src.common.logger import Logger
 from .file_system import backup_file, restore_file_from_backup, get_user_home_directory
 from .user_interactions import user_confirmation
 
-Logger = Logger().get_logger()
+logger = Logger().get_logger()
 
 def validate_shell_script(shell_path, shell):
     """ Validate the shell script using the specified shell. """
