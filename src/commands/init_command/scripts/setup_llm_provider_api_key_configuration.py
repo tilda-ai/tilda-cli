@@ -37,7 +37,7 @@ def api_key_setup_action_prompt():
         {
             "type": "list",
             "name": "action",
-            "message": "Please choose an option:",
+            "message": "You can set your OpenAI API key now or skip it for later. What would you like to do?\nYou can find your API key at https://platform.openai.com/account/api-keys.",
             "choices": ["Insert", "Skip"],
         }
     ]

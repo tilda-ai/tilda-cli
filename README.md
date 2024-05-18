@@ -42,6 +42,8 @@ deactivate
 
 # install the tilda package globally
 pipx install .
+# (to delete the global installation)
+pipx uninstall tilda
 
 tilda terminal "clean all python cache files"
 
@@ -54,9 +56,6 @@ pipx install -e .
 
 # 2. run watch mode
 python3 watch.py 
-
-# to delete the global installation
-pipx uninstall tilda
 ```
 
 
@@ -70,18 +69,18 @@ To run the terminal agent:
 
 
 ```shell
-tilda terminal "Say Hello, World!"
+tilda terminal "say Hello, World!"
 
 # executed command
 echo "Hello, World!"
 ```
 
 
-To run the terminal agent with scoped execution context (in natural language):
+To run the terminal agent with a mocked response during development:
 
 
 ```shell
-terminal "rebuild packages with node v21" --scope "packages: types, common, shell-core"
+terminal "rebuild packages with node v21" --mock
 ```
 
 
