@@ -1,8 +1,5 @@
 import json
-from pathlib import Path
 import toml
-import os
-import tiktoken
 
 class Config:
     _instance = None
@@ -21,26 +18,8 @@ class Config:
     def get_dev_env_context(self):
         return json.dumps(self.config["dev_env_context"], indent=4)
 
-    def get_ollama_api_endpoint(self):
-        return self.config["api_endpoints"]["ollama"]
-
-    def get_claude_api_key(self):
-        return self.config["api_keys"]["claude_api_key"]
-
     def get_openai_api_key(self):
         return self.config["api_keys"]["open_ai_api_key"]
-
-    def get_gemini_api_key(self):
-        return self.config["api_keys"]["gemini_api_key"]
-
-    def get_mistral_api_key(self):
-        return self.config["api_keys"]["mistral_api_key"]
-
-    def get_groq_api_key(self):
-        return self.config["api_keys"]["groq_api_key"]
-
-    def get_terminal_tokenizer(self):
-        return tiktoken.get_encoding(self.config["commands"]["terminal"]["token_encoding"])
     
     def get_terminal_command_base_model(self):
         return self.config["commands"]["terminal"]["base_model"]

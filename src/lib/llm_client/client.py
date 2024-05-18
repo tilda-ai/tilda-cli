@@ -1,20 +1,20 @@
-import json
-import requests
 from typing import Callable, Dict, List, Optional
 
 from src.config import Config
 from ..types.llm_tools import FunctionTool
 from ..types.llm_messages import Message
 from .tool_handler import ToolHandler
+from .error_handler import ErrorHandler
+from .response_validator import ResponseValidator
 from openai import OpenAI
 
 
 class LLMClient:
-    def __init__(self, tools_mapping: Dict[str, Callable] = {}):
+    def __init__(self, tools_mapping: Dict[str, Callable] = None):
         self.config = Config()
         self.api_key = self.config.get_openai_api_key()
         self.client = OpenAI(api_key=self.api_key)
-        self.tool_handler = ToolHandler(tools_mapping)
+        self.tool_handler = ToolHandler(tools_mapping or {})
 
     def inference(
         self,
@@ -28,7 +28,7 @@ class LLMClient:
         try:
             response = self._make_request(model_id, messages, tools, tool_choice)
         except Exception as e:
-            return self._handle_exception(e)
+            return ErrorHandler.handle_exception(e)  # Use ErrorHandler
 
         return self._process_response(model_id, response, messages)
 
@@ -51,7 +51,7 @@ class LLMClient:
         self, model_id: str, response: dict, messages: List[Message]
     ) -> Dict[str, str]:
         response_message = response.choices[0].message
-        validation_result = self._validate_json_response(
+        validation_result = ResponseValidator.validate_json_response(
             response_message, "InferenceResponse"
         )
 
@@ -80,96 +80,9 @@ class LLMClient:
         try:
             second_response = self._make_request(model_id, updated_messages, [], None)
         except Exception as e:
-            return self._handle_exception(e)
+            return ErrorHandler.handle_exception(e)  # Use ErrorHandler
 
         second_response_message = second_response.choices[0].message
-        return self._validate_json_response(
+        return ResponseValidator.validate_json_response(
             second_response_message, "InferenceResponseWithToolCalls"
         )
-
-    def _validate_json_response(
-        self, message: dict, response_type: str
-    ) -> Dict[str, str]:
-        try:
-            json.loads(message.content)
-            return {
-                "status": "success",
-                "type": response_type,
-                "message": message.content,
-            }
-        except json.JSONDecodeError:
-            # handle duplicated response
-            deduped_response_object = self._dedupe_json_objects(message.content)
-
-            if deduped_response_object:
-                try:
-                    json.loads(deduped_response_object)
-                    return {
-                        "status": "success",
-                        "type": response_type,
-                        "message": deduped_response_object,
-                    }
-                except json.JSONDecodeError:
-                    return {
-                        "status": "error",
-                        "type": f"Invalid{response_type}",
-                        "message": f"Invalid JSON received: \n\n{message.content.strip()}",
-                    }
-
-            return {
-                "status": "error",
-                "type": f"Invalid{response_type}",
-                "message": f"Invalid JSON received: \n\n{message.content.strip()}",
-            }
-
-    def _dedupe_json_objects(self, input_string: str) -> Optional[str]:
-        try:
-            # Replace all line breaks with spaces
-            text = input_string.replace("\n", " ")
-
-            # Split the string by whitespace and then join with a single space
-            clean_text = " ".join(text.split())
-
-            sprinkled_text = clean_text.replace("} {", "}~~!~~{")
-
-            # Split the cleaned string into separate JSON objects
-            json_objects = sprinkled_text.split("~~!~~")
-
-            return json_objects[0] if json_objects else None
-        except Exception:
-            return None
-
-    def _handle_exception(self, e: Exception) -> Dict[str, str]:
-        if isinstance(e, requests.exceptions.HTTPError):
-            return self.handle_http_error(e)
-        elif isinstance(e, requests.exceptions.ConnectionError):
-            return {
-                "status": "error",
-                "type": "APIConnectionError",
-                "message": "Check your network settings, proxy configuration, SSL certificates, or firewall rules.",
-            }
-        elif isinstance(e, requests.exceptions.Timeout):
-            return {
-                "status": "error",
-                "type": "APITimeoutError",
-                "message": "Request timed out. Retry your request after a brief wait.",
-            }
-        else:
-            return {
-                "status": "error",
-                "type": "UnexpectedError",
-                "message": str(e),
-            }
-
-    def _handle_http_error(self, e: requests.exceptions.HTTPError) -> Dict[str, str]:
-        error_map = {
-            401: ("AuthenticationError", "Invalid, expired, or revoked API key."),
-            400: ("BadRequestError", "Malformed request or missing parameters."),
-            404: ("NotFoundError", "Resource not found."),
-            429: ("RateLimitError", "Rate limit exceeded."),
-            500: ("InternalServerError", "Server error. Retry later."),
-        }
-        error_type, message = error_map.get(
-            e.response.status_code, ("HTTPError", "An HTTP error occurred.")
-        )
-        return {"status": "error", "type": error_type, "message": message}
