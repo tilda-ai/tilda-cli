@@ -1,5 +1,5 @@
 import os
-from src.pkg.utils import get_jinja_env
+from src.lib.utils import get_jinja_env
 
 
 def touch_tildaconfig(base_path: str):

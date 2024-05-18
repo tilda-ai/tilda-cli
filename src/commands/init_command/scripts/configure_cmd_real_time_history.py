@@ -1,5 +1,5 @@
-from src.pkg.utils.shell_scripts import append_script_to_shell_rc
-from src.pkg.utils.get_user_shell import get_user_shell
+from src.lib.utils.shell_scripts import append_script_to_shell_rc
+from src.lib.utils.get_user_shell import get_user_shell
 
 
 # Define user confirmation prompt

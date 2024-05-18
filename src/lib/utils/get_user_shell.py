@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from src.pkg.logger import Logger
+from src.lib.logger import Logger
 
 logger = Logger().get_logger()
 

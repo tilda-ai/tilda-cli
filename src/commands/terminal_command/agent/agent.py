@@ -6,20 +6,20 @@ import sys
 
 from rich.console import Console
 
-from src.pkg.print_error import print_error
+from src.lib.print_error import print_error
 from src.config import Config
-from src.pkg.llm_client.client import LLMClient
+from src.lib.llm_client.client import LLMClient
 
-from src.pkg.utils.get_jinja_env import get_jinja_env
-from src.pkg.utils.get_project_config_files import get_project_config_files
-from src.pkg.utils.get_project_root import (
+from src.lib.utils.get_jinja_env import get_jinja_env
+from src.lib.utils.get_project_config_files import get_project_config_files
+from src.lib.utils.get_project_root import (
     get_project_root_folder_name,
     get_project_root_path,
 )
-from src.pkg.utils.get_project_tree import get_project_tree
-from src.pkg.utils.get_reducted_path import get_reducted_path
-from src.pkg.utils.read_cmd_history import read_cmd_history
-from src.pkg.utils.write_log_file import write_log_file
+from src.lib.utils.get_project_tree import get_project_tree
+from src.lib.utils.get_reducted_path import get_reducted_path
+from src.lib.utils.read_cmd_history import read_cmd_history
+from src.lib.utils.write_log_file import write_log_file
 
 from ..types import TerminalCommandArgs
 from .tools.get_project_file_contents_tool import get_project_file_contents_tool

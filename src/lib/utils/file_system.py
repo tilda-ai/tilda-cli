@@ -2,7 +2,7 @@ from fnmatch import fnmatch
 import os
 import shutil
 
-from src.pkg.logger import Logger
+from src.lib.logger import Logger
 
 logger = Logger().get_logger()
 

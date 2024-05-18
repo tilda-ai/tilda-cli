@@ -2,7 +2,7 @@
 from pathlib import Path
 from rich.console import Console
 
-from src.pkg.utils import append_to_file
+from src.lib.utils import append_to_file
 
 # from .scripts.configure_cmd_real_time_history import configure_cmd_real_time_history
 from .scripts.touch_tildaconfig import touch_tildaconfig
