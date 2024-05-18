@@ -1,0 +1,165 @@
+import json
+import requests
+from typing import Callable, Dict, List, Optional
+
+from src.config import Config
+from ..types.llm_tools import FunctionTool
+from ..types.llm_messages import Message
+from .tool_handler import ToolHandler
+from openai import OpenAI
+
+
+class LLMClient:
+    def __init__(self, command_function_tools_mapping: Dict[str, Callable] = {}):
+        self.config = Config()
+        self.api_key = self.config.get_openai_api_key()
+        self.client = OpenAI(api_key=self.api_key)
+        self.tool_handler = ToolHandler(command_function_tools_mapping)
+
+    def inference(
+        self,
+        model_id: str,
+        messages: List[Message],
+        tools: List[FunctionTool],
+        tool_choice: Optional[str] = None,
+    ) -> Dict[str, str]:
+        tool_choice = tool_choice or ("auto" if tools else None)
+
+        try:
+            response = self._make_request(model_id, messages, tools, tool_choice)
+        except Exception as e:
+            return self._handle_exception(e)
+
+        return self._process_response(model_id, response, messages)
+
+    def _make_request(
+        self,
+        model_id: str,
+        messages: List[Message],
+        tools: List[FunctionTool],
+        tool_choice: Optional[str],
+    ) -> dict:
+        return self.client.chat.completions.create(
+            model=model_id,
+            messages=messages,
+            response_format={"type": "json_object"},
+            tools=tools,
+            tool_choice=tool_choice,
+        )
+
+    def _process_response(
+        self, model_id: str, response: dict, messages: List[Message]
+    ) -> Dict[str, str]:
+        response_message = response["choices"][0]["message"]
+        validation_result = self._validate_json_response(
+            response_message, "InferenceResponse"
+        )
+
+        if validation_result["status"] == "error":
+            return validation_result
+
+        if response_message.get("tool_calls"):
+            return self._handle_tool_calls(
+                model_id, response_message, response, messages
+            )
+
+        return validation_result
+
+    def _handle_tool_calls(
+        self,
+        model_id: str,
+        response_message: dict,
+        response: dict,
+        messages: List[Message],
+    ) -> Dict[str, str]:
+        messages.append(response_message)  # extend conversation
+        updated_messages = self.tool_handler.handle_tool_calls(
+            response.get("tool_calls", []), messages
+        )
+
+        try:
+            second_response = self._make_request(model_id, updated_messages, [], None)
+        except Exception as e:
+            return self._handle_exception(e)
+
+        second_response_message = second_response["choices"][0]["message"]
+        return self._validate_json_response(
+            second_response_message, "InferenceResponseWithToolCalls"
+        )
+
+    def _validate_json_response(
+        self, message: dict, response_type: str
+    ) -> Dict[str, str]:
+        try:
+            json.loads(message["content"])
+            return {
+                "status": "success",
+                "type": response_type,
+                "message": message["content"],
+            }
+        except json.JSONDecodeError:
+            deduped_response_object = self._dedupe_json_objects(message["content"])
+
+            if deduped_response_object:
+                try:
+                    json.loads(deduped_response_object)
+                    return {
+                        "status": "success",
+                        "type": response_type,
+                        "message": deduped_response_object,
+                    }
+                except json.JSONDecodeError:
+                    return {
+                        "status": "error",
+                        "type": f"Invalid{response_type}",
+                        "message": f"Invalid JSON received: \n\n{message['content'].strip()}",
+                    }
+
+            return {
+                "status": "error",
+                "type": f"Invalid{response_type}",
+                "message": f"Invalid JSON received: \n\n{message['content'].strip()}",
+            }
+
+    def _dedupe_json_objects(self, input_string: str) -> Optional[str]:
+        try:
+            clean_text = " ".join(input_string.replace("\n", " ").split())
+            json_objects = clean_text.replace("} {", "}~~!~~{").split("~~!~~")
+            return json_objects[0] if json_objects else None
+        except Exception:
+            return None
+
+    def _handle_exception(self, e: Exception) -> Dict[str, str]:
+        if isinstance(e, requests.exceptions.HTTPError):
+            return self._handle_http_error(e)
+        elif isinstance(e, requests.exceptions.ConnectionError):
+            return {
+                "status": "error",
+                "type": "APIConnectionError",
+                "message": "Check your network settings, proxy configuration, SSL certificates, or firewall rules.",
+            }
+        elif isinstance(e, requests.exceptions.Timeout):
+            return {
+                "status": "error",
+                "type": "APITimeoutError",
+                "message": "Request timed out. Retry your request after a brief wait.",
+            }
+        else:
+            return {
+                "status": "error",
+                "type": "UnexpectedError",
+                "message": str(e),
+            }
+
+    def _handle_http_error(self, e: requests.exceptions.HTTPError) -> Dict[str, str]:
+        error_map = {
+            401: ("AuthenticationError", "Invalid, expired, or revoked API key."),
+            400: ("BadRequestError", "Malformed request or missing parameters."),
+            404: ("NotFoundError", "Resource not found."),
+            429: ("RateLimitError", "Rate limit exceeded."),
+            500: ("InternalServerError", "Server error. Retry later."),
+        }
+        error_type, message = error_map.get(
+            e.response.status_code, ("HTTPError", "An HTTP error occurred.")
+        )
+        return {"status": "error", "type": error_type, "message": message}
