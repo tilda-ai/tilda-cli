@@ -1,7 +1,7 @@
 from pathlib import Path
 from InquirerPy import prompt
 
-from src.common.logger import Logger
+from src.lib.logger import Logger
 from .update_tildaconfig import update_tildaconfig
 
 logger = Logger().get_logger()

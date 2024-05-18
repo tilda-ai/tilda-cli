@@ -46,6 +46,6 @@ def main():
             commands[args.subcommand]["function"](args)
         except KeyboardInterrupt:
             print(
-                "\033[1;32m\nKeyboardInterrupt received! Cleaning up and exiting.\033[0m"
+                "\033[1;32m\nProcess terminated.\033[0m"
             )
             sys.exit(0)

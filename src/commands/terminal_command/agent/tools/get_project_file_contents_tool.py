@@ -1,4 +1,4 @@
-from src.types.llm_tools import FunctionTool, JSONSchema
+from src.lib.types.llm_tools import FunctionTool, JSONSchema
 
 # Define the JSONSchema for 'path' property
 file_path_schema = JSONSchema(
