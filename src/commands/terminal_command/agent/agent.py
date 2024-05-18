@@ -86,8 +86,6 @@ class TerminalAgent:
             print_error(
                 title=f"[bold red]Error [{inference['type']}]:[/bold red]",
                 message=f"[red]{inference['message']}[/red]",
-                file="terminal_command/agent/agent.py",
-                operation="TerminalAgent.execute",
                 cli_args=args,
             )
 
