@@ -5,7 +5,7 @@ import sys
 
 from rich.console import Console
 
-from src.lib_pkg.logger import Logger
+from src.pkg.logger import Logger
 from src.config import Config
 
 from .agent import TerminalAgent

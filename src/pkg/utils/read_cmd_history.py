@@ -1,6 +1,6 @@
 import os
 
-from src.lib_pkg.logger import Logger
+from src.pkg.logger import Logger
 
 from .file_system import get_user_home_directory
 from .get_user_shell import get_user_shell

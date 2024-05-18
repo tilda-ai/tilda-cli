@@ -50,7 +50,7 @@ class LLMClient:
     def _process_response(
         self, model_id: str, response: dict, messages: List[Message]
     ) -> Dict[str, str]:
-        response_message = response["choices"][0]["message"]
+        response_message = response.choices[0].message
         validation_result = self._validate_json_response(
             response_message, "InferenceResponse"
         )
@@ -58,7 +58,7 @@ class LLMClient:
         if validation_result["status"] == "error":
             return validation_result
 
-        if response_message.get("tool_calls"):
+        if response_message.tool_calls:
             return self._handle_tool_calls(
                 model_id, response_message, response, messages
             )
@@ -74,7 +74,7 @@ class LLMClient:
     ) -> Dict[str, str]:
         messages.append(response_message)  # extend conversation
         updated_messages = self.tool_handler.handle_tool_calls(
-            response.get("tool_calls", []), messages
+            response["tool_calls"], messages
         )
         
         try:
@@ -82,7 +82,7 @@ class LLMClient:
         except Exception as e:
             return self._handle_exception(e)
 
-        second_response_message = second_response["choices"][0]["message"]
+        second_response_message = second_response.choices[0].message
         return self._validate_json_response(
             second_response_message, "InferenceResponseWithToolCalls"
         )
@@ -91,15 +91,15 @@ class LLMClient:
         self, message: dict, response_type: str
     ) -> Dict[str, str]:
         try:
-            json.loads(message["content"])
+            json.loads(message.content)
             return {
                 "status": "success",
                 "type": response_type,
-                "message": message["content"],
+                "message": message.content,
             }
         except json.JSONDecodeError:
             # handle duplicated response
-            deduped_response_object = self._dedupe_json_objects(message["content"])
+            deduped_response_object = self._dedupe_json_objects(message.content)
 
             if deduped_response_object:
                 try:
@@ -113,13 +113,13 @@ class LLMClient:
                     return {
                         "status": "error",
                         "type": f"Invalid{response_type}",
-                        "message": f"Invalid JSON received: \n\n{message['content'].strip()}",
+                        "message": f"Invalid JSON received: \n\n{message.content.strip()}",
                     }
 
             return {
                 "status": "error",
                 "type": f"Invalid{response_type}",
-                "message": f"Invalid JSON received: \n\n{message['content'].strip()}",
+                "message": f"Invalid JSON received: \n\n{message.content.strip()}",
             }
 
     def _dedupe_json_objects(self, input_string: str) -> Optional[str]:

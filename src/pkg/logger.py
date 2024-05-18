@@ -1,5 +1,5 @@
 import logging
-from src.lib_pkg.types.singleton_meta import SingletonMeta
+from src.pkg.types.singleton_meta import SingletonMeta
 
 #TODO: implement dymamic logger name
 # gpt-conversation: https://chat.openai.com/share/79071939-4f59-4e30-a0e9-b3efedbcb0af
