@@ -38,7 +38,7 @@ class TerminalCommandRunner:
             with self.console.status(
                 "[bold green]Processing...[/bold green]\n", spinner="dots"
             ):
-                commands = TerminalAgent().execute(args)
+                commands = TerminalAgent().generate_commands(args)
 
         self.render(commands)
 

@@ -10,11 +10,11 @@ from openai import OpenAI
 
 
 class LLMClient:
-    def __init__(self, command_function_tools_mapping: Dict[str, Callable] = {}):
+    def __init__(self, tools_mapping: Dict[str, Callable] = {}):
         self.config = Config()
         self.api_key = self.config.get_openai_api_key()
         self.client = OpenAI(api_key=self.api_key)
-        self.tool_handler = ToolHandler(command_function_tools_mapping)
+        self.tool_handler = ToolHandler(tools_mapping)
 
     def inference(
         self,

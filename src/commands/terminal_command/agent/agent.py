@@ -23,20 +23,20 @@ from src.utils.write_log_file import write_log_file
 
 from ..types import TerminalCommandArgs
 from .tools.get_project_file_contents_tool import get_project_file_contents_tool
-from .tools.command_function_tools_mapping import command_function_tools_mapping
-from .examples import examples
+from .tools.terminal_command_tools_mapping import terminal_command_tools_mapping
+from .prompt.examples import examples
 
 
 class TerminalAgent:
     def __init__(self):
         self.console = Console()
         self.config = Config()
-        self.llm = LLMClient(command_function_tools_mapping=command_function_tools_mapping)
+        self.llm = LLMClient(tools_mapping=terminal_command_tools_mapping)
         self.template = get_jinja_env().get_template(
-            "terminal_command/agent/system_prompt.jinja2"
+            "terminal_command/agent/prompt/system_prompt.jinja2"
         )
 
-    def render(self, args: TerminalCommandArgs) -> str:
+    def render_system_prompt(self, args: TerminalCommandArgs) -> str:
         rendered_prompt = self.template.render(
             prompt=args.prompt,
             user_os=os.name,
@@ -57,8 +57,8 @@ class TerminalAgent:
 
         return rendered_prompt
 
-    def execute(self, args: TerminalCommandArgs) -> str:
-        rendered_system_prompt = self.render(args)
+    def generate_commands(self, args: TerminalCommandArgs) -> str:
+        rendered_system_prompt = self.render_system_prompt(args)
 
         if args.dry:
             self.console.print("[bold]Dry-run mode enabled, no inference made.[/bold]")
