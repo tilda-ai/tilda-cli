@@ -5,7 +5,7 @@ def prompt_command_action() -> str:
             'type': 'list',
             'name': 'action',
             'message': 'Do you want to run this command?',
-            'choices': ['Run', 'Edit', 'Explain', 'Skip']
+            'choices': ['Run', 'Edit', 'Explain', 'Copy', 'Terminate']
         }], style={"pointer": "#00afff", "questionmark": "#ff9d00 bold"},)
 
     return response['action']

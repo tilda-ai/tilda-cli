@@ -5,7 +5,6 @@ import sys
 
 from rich.console import Console
 
-from src.lib.logger import Logger
 from src.config import Config
 
 from .agent import TerminalAgent
@@ -21,13 +20,13 @@ class TerminalCommandRunner:
     def __init__(self):
         self.console = Console()
         self.config = Config()
-        self.logger = Logger().get_logger()
 
-    def run(self, args: TerminalCommandArgs):
-        self.logger.info(
-            "[run_terminal]: Running tilda terminal agent with args %s", args
-        )
+    def run(self, args: TerminalCommandArgs):        
+        commands = self.generate_commands(args)
 
+        self.render(commands)
+        
+    def generate_commands(self, args: TerminalCommandArgs):
         if args.mock:
             with self.console.status(
                 "[bold green]Processing...[/bold green]\n", spinner="dots"
@@ -35,12 +34,14 @@ class TerminalCommandRunner:
                 time.sleep(1)
                 commands = json.loads(self.config.get_terminal_command_mock_response())
         else:
-            with self.console.status(
-                "[bold green]Processing...[/bold green]\n", spinner="dots"
-            ):
+            if not args.dry:
+                with self.console.status(
+                    "[bold green]Processing...[/bold green]\n", spinner="dots"
+                ):
+                    commands = TerminalAgent().generate_commands(args)
+            else:
                 commands = TerminalAgent().generate_commands(args)
-
-        self.render(commands)
+        return commands
 
     def render(self, commands):
         for command in sorted(commands, key=lambda x: x["executionOrder"]):
@@ -63,6 +64,12 @@ class TerminalCommandRunner:
             if action == "Edit":
                 self.console.print(
                     "[grey50]└── Command edit feature not yet implemented.[/grey50]"
+                )
+                continue
+
+            if action == "Copy":
+                self.console.print(
+                    "[grey50]└── Command copy feature not yet implemented.[/grey50]"
                 )
                 continue
 

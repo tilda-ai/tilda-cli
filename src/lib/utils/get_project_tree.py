@@ -3,7 +3,7 @@ from pathlib import Path
 
 from .get_project_root import get_project_root_path
 
-from .file_system import is_in_file
+from .is_file_in_git import is_file_in_git
 
 # prefix components:
 space =  '    '
@@ -22,7 +22,7 @@ def tree(dir_path: Path, prefix: str=''):
     # contents each get pointers that are ├── with a final └── :
     pointers = [tee] * (len(contents) - 1) + [last]
     for pointer, path in zip(pointers, contents):
-        if is_in_file(".gitignore", path.name) or path.name == '.git':
+        if not is_file_in_git(path) or path.name == '.git':
             continue
         yield prefix + pointer + path.name
 

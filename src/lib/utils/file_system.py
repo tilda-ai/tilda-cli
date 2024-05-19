@@ -44,22 +44,3 @@ def restore_file_from_backup(file_path):
             logger.info(f"No backup found at {backup_path}")
     except IOError as e:
         logger.error(f"Failed to restore backup: {e}")
-
-def is_in_file(filename, entry):
-    if os.path.exists(filename):
-        with open(filename, 'r', encoding="utf-8") as file:
-            content = file.read()
-            if entry in content:
-                return True
-            else:
-                # break the content into a list of lines
-                content = content.split("\n")
-                # check if the entry matches the line utilize shell-style wildcard matching
-                # TODO: match case is too loose, if there's a line with src, the entire src will be matched and ignored in later scripts
-                for line in content:
-                    if line:
-                        if fnmatch(entry.strip('/'), line.strip('/')):
-                            return True
-                return False
-    else:
-        return False

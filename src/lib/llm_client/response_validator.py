@@ -1,6 +1,8 @@
 import json
 from typing import Dict, Optional
 
+#TODO: add schema validation
+#TODO: add self rejection and reflection
 
 class ResponseValidator:
     @staticmethod

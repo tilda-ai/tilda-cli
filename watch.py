@@ -29,7 +29,7 @@ class DebouncedBuilder(FileSystemEventHandler):
         subprocess.run(["python3", "-m", "build"])
 
     def on_any_event(self, event):
-        if self.should_ignore(event.src_path):
+        if self.should_ignore(event.src_path) and 'src/lib' not in event.src_path:
             return
 
         with self.lock:

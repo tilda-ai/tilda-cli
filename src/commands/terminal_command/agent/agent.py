@@ -18,7 +18,7 @@ from src.lib.utils.get_project_root import (
 )
 from src.lib.utils.get_project_tree import get_project_tree
 from src.lib.utils.get_reducted_path import get_reducted_path
-from src.lib.utils.read_cmd_history import read_cmd_history
+from src.lib.utils.get_shell_history import read_cmd_history
 from src.lib.utils.write_log_file import write_log_file
 
 from ..types import TerminalCommandArgs

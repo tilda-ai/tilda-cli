@@ -13,10 +13,11 @@ You are part of 'Tilda', a CLI tool designed to assist developers with software 
 {% if dev_env_context %}- **Development Tools:**
 ```json
 {{dev_env_context}}
-```{% endif %}
-{% if project_config_files is defined and project_config_files is mapping and project_config_files|length > 0 %}
+```{% endif %} {% if project_config_files is defined and project_config_files is mapping and project_config_files|length > 0 %}
 - **Project Configuration Files:** {% for path, details in project_config_files.items() %}
-  - File Type: {{ details.type }} | File Path: `{{project_root_path}}/{{ details.file_project_path }}`{% endfor %}{% endif %}
+  - File
+    - Type: {{ details.type }}
+    - Path: `{{project_root_path}}/{{ details.file_project_path }}`{% endfor %}{% endif %}
 - **Project Directory Structure:**
 ```markdown
 {{project_root_folder_name}}

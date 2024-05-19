@@ -21,11 +21,12 @@ def read_last_commands(history_file, num_commands=30):
     if not history_file:
         logger.info("Unsupported shell for history retrieval.")
         return "Unsupported shell for history retrieval."
-
     try:
         with open(history_file, 'r', encoding='utf-8', errors='ignore') as file:
             # Efficiently read only the last 'num_commands' lines
             history = file.readlines()[-num_commands:]
+            #clean history lines from prefix pattern ': XXXXXXXXXX:0;'
+            history = [line.split(';', 1)[1] for line in history]
         return history
     except FileNotFoundError:
         logger.error(f"History file not found: {history_file}")
