@@ -9,7 +9,7 @@ from src.config import Config
 
 from .agent import TerminalAgent
 from .types import TerminalCommandArgs
-from .tui.print_command import print_command
+from .tui.print_completion import print_completion
 from .tui.prompt_command_action import prompt_command_action
 from .tui.prompt_error_resolution import prompt_error_resolution
 from .tui.print_command_output import print_command_output
@@ -22,37 +22,42 @@ class TerminalCommandRunner:
         self.config = Config()
 
     def run(self, args: TerminalCommandArgs):        
-        commands = self.generate_commands(args)
+        completions = self.generate_completions(args)
 
-        self.render(commands)
+        self.render(completions)
         
-    def generate_commands(self, args: TerminalCommandArgs):
+    def generate_completions(self, args: TerminalCommandArgs):
         if args.mock:
             with self.console.status(
                 "[bold green]Processing...[/bold green]\n", spinner="dots"
             ):
                 time.sleep(1)
-                commands = json.loads(self.config.get_terminal_command_mock_response())
+                completions = json.loads(self.config.get_terminal_command_mock_response())
         else:
             if not args.dry:
                 with self.console.status(
                     "[bold green]Processing...[/bold green]\n", spinner="dots"
                 ):
-                    commands = TerminalAgent().generate_commands(args)
+                    completions = TerminalAgent().generate_commands(args)
             else:
-                commands = TerminalAgent().generate_commands(args)
-        return commands
+                completions = TerminalAgent().generate_commands(args)
+        return completions
 
-    def render(self, commands):
-        for command in sorted(commands, key=lambda x: x["executionOrder"]):
+    def render(self, completions):
+        for completion in sorted(completions, key=lambda x: x["executionOrder"]):
             self.console.print()
-            print_command(command, len(commands))
+            
+            if completion["responseType"] == "error":
+                print_completion(completion, len(completions))
+                sys.exit(0)
+            
+            print_completion(completion, len(completions))
             action = prompt_command_action()
 
             if action == "Run":
                 self.run_command(
-                    command["shellScript"],
-                    is_last=command["executionOrder"] == len(commands),
+                    completion["shellScript"],
+                    is_last=completion["executionOrder"] == len(completions),
                 )
 
             if action == "Skip":
@@ -89,7 +94,6 @@ class TerminalCommandRunner:
             with self.console.status(
                 "[grey50]Running...[/grey50]", spinner="dots", spinner_style="grey50"
             ):
-                time.sleep(1)
                 result = subprocess.run(
                     command, shell=True, check=True, text=True, capture_output=True
                 )

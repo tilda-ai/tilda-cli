@@ -5,8 +5,8 @@ from pathlib import Path
 import sys
 
 from rich.console import Console
+from rich.panel import Panel
 
-from src.lib.print_error import print_error
 from src.config import Config
 from src.lib.llm_client.client import LLMClient
 
@@ -24,7 +24,7 @@ from src.lib.utils.write_log_file import write_log_file
 from ..types import TerminalCommandArgs
 from .tools.get_project_file_contents_tool import get_project_file_contents_tool
 from .tools.terminal_command_tools_mapping import terminal_command_tools_mapping
-from .prompt.examples import examples
+from .templates.examples import examples
 
 
 class TerminalAgent:
@@ -33,7 +33,7 @@ class TerminalAgent:
         self.config = Config()
         self.llm = LLMClient(tools_mapping=terminal_command_tools_mapping)
         self.template = get_jinja_env().get_template(
-            "terminal_command/agent/prompt/system_prompt.jinja2"
+            "terminal_command/agent/templates/system_prompt.jinja2"
         )
 
     def render_system_prompt(self, args: TerminalCommandArgs) -> str:
@@ -83,12 +83,17 @@ class TerminalAgent:
         )
 
         if inference["status"] == "error":
-            print_error(
-                title=f"[bold red]Error [{inference['type']}]:[/bold red]",
-                message=f"[red]{inference['message']}[/red]",
-                cli_args=args,
+            self.console.print()
+            panel = Panel(
+                f"{inference["message"]}",
+                title="[bold red]Inference Error[/bold red]",
+                padding=(1, 2),
+                expand=True,
+                title_align="left",
+                border_style="grey50",
             )
-
+            self.console.print(panel)
+            self.console.print()
             sys.exit(1)
 
         return json.loads(inference["message"]).get("completions")

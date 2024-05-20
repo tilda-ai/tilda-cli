@@ -25,7 +25,7 @@ get_project_file_contents_tool_instance = FunctionTool(
     type='function',
     function={
         'name': 'get_project_file_contents',
-        'description': 'Retrieves the contents of the file at the specified path, Only use this tool if you know that a file holds information you need to generate a response.',
+        'description': 'Retrieves the contents of the file at the specified path. Only use this tool if you know that a file holds information you need to generate a response.',
         'parameters': get_project_file_contents_params.to_dict()  # Convert to dictionary
     }
 )

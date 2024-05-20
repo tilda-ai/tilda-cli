@@ -23,8 +23,15 @@ For now, to run tilda locally from your command line, you can install it directl
 # Installation
 # ---
 
+#install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+#install pipx
+brew install pipx
+pipx ensurepath
+
 # clone the repo
-git clone https://github.com/tilda/tilda.git
+git clone git@github.com:tilda-ai/tilda-cli.git
 cd tilda
 
 # create virtual env
@@ -45,7 +52,7 @@ pipx install .
 # (to delete the global installation)
 pipx uninstall tilda
 
-tilda terminal "clean all python cache files"
+tilda terminal "clean all python cache files in src"
 
 # ---
 # Development
@@ -55,7 +62,7 @@ tilda terminal "clean all python cache files"
 pipx install -e .
 
 # 2. run watch mode
-python3 watch.py 
+python3 watch.py
 ```
 
 
@@ -80,7 +87,7 @@ To run the terminal agent with a mocked response during development:
 
 
 ```shell
-terminal "rebuild packages with node v21" --mock
+tilda terminal "" --mock
 ```
 
 

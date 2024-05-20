@@ -7,7 +7,7 @@ from src.commands import commands
 
 def configure_parser():
     """Configure and return the main argument parser with subparsers for commands."""
-    parser = argparse.ArgumentParser(description="The AI CLI")
+    parser = argparse.ArgumentParser(description="the world's first open source ai cli tool")
     parent_parser = argparse.ArgumentParser(add_help=False)
     parent_parser.add_argument(
         "--dry",
@@ -44,6 +44,9 @@ def main():
     if args.subcommand:
         try:
             commands[args.subcommand]["function"](args)
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            sys.exit(1)
         except KeyboardInterrupt:
             print(
                 "\033[1;32m\nProcess terminated.\033[0m"
