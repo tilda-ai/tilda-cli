@@ -1,17 +1,20 @@
-# src/commands/run_init.py
 from pathlib import Path
 from rich.console import Console
 
+from src.commands.init_command.scripts.setup_llm_provider_api_key_configuration import setup_llm_provider_api_key_configuration
 from src.lib.utils import append_to_file
-
-# from .scripts.configure_cmd_real_time_history import configure_cmd_real_time_history
 from .scripts.touch_tildaconfig import touch_tildaconfig
+
+# src/commands/run_init.py
+# from .scripts.configure_cmd_real_time_history import configure_cmd_real_time_historyry
 # from .scripts.setup_llm_provider_api_key_configuration import setup_llm_provider_api_key_configuration
+
 
 
 class InitCommandRunner:
     def __init__(self):
         self.console = Console()
+
 
     def run(self, args):
         self.console.print("[gray58]Initializing ~tilda. An AI powered command-line tool for us developers. Welcome to the party![/gray58]\n")
@@ -26,8 +29,7 @@ class InitCommandRunner:
             f"{current_directory_path}/.gitignore", "\n\ntildaconfig.toml\n\n"
         )
 
-        # result = setup_llm_provider_api_key_configuration(current_directory_path)
-        # print(result)
+        setup_llm_provider_api_key_configuration(current_directory_path)  
 
         # configure shell command output logger
         # configure_cmd_real_time_history()

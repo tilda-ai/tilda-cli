@@ -12,6 +12,7 @@ setup(
     },
     include_package_data=True,
     install_requires=[
+        'keyring==25.2.1',
         'inquirerpy==0.3.4',
         'argparse==1.4.0',
         'logging==0.4.9.6',

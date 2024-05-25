@@ -73,3 +73,5 @@ urllib3==2.2.1
 watchdog==4.0.0
 wcwidth==0.2.13
     # via prompt-toolkit
+
+keyring==25.2.1

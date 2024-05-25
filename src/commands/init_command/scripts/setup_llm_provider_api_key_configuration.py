@@ -1,8 +1,9 @@
 from pathlib import Path
 from InquirerPy import prompt
 
+from src.config import Config
 from src.lib.logger import Logger
-from .update_tildaconfig import update_tildaconfig
+from src.lib.utils.key_handler import KeyHandler
 
 logger = Logger().get_logger()
 
@@ -18,15 +19,11 @@ def setup_llm_provider_api_key_configuration(current_directory_path: Path):
         if action == "Skip":
             logger.info("Skipping API key configuration.")
             return "Operation skipped by the user."
-
-        placeholder_pattern = "<YOUR_OPENAI_API_KEY>"
-
+        logger.info("Skipping API key configuration.")
+        
         api_key = set_api_key_prompt()
-
-        update_tildaconfig(current_directory_path, placeholder_pattern, api_key)
-        logger.info("Configuration updated successfully.")
-        return "Configuration updated successfully."
-
+        KeyHandler.set_key(Config().get_llm_api_key_name(), api_key)
+        
     except Exception as e:
         logger.error("An unexpected error occurred: %s", str(e))
         return f"An unexpected error occurred: {str(e)}"

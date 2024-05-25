@@ -1,5 +1,8 @@
 import json
+from venv import logger
 import toml
+from src.lib.utils.key_handler import KeyHandler
+
 
 class Config:
     _instance = None
@@ -18,8 +21,13 @@ class Config:
     def get_dev_env_context(self):
         return json.dumps(self.config["dev_env_context"], indent=4)
 
-    def get_openai_api_key(self):
-        return self.config["api_keys"]["open_ai_api_key"]
+    def get_llm_api_key(self):
+        logger.info("Getting OpenAI API key")
+        return KeyHandler.get_key(self.get_llm_api_key_name())
+    
+    
+    def get_llm_api_key_name(self):
+        return 'openai_api_key'
     
     def get_terminal_command_base_model(self):
         return self.config["commands"]["terminal"]["base_model"]

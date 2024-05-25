@@ -12,7 +12,7 @@ from openai import OpenAI
 class LLMClient:
     def __init__(self, tools_mapping: Dict[str, Callable] = None):
         self.config = Config()
-        self.api_key = self.config.get_openai_api_key()
+        self.api_key = self.config.get_llm_api_key()
         self.client = OpenAI(api_key=self.api_key)
         self.tool_handler = ToolHandler(tools_mapping or {})
 

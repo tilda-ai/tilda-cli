@@ -1,4 +1,5 @@
 inquirerpy==0.3.4
+keyring==25.2.1
 argparse==1.4.0
 logging==0.4.9.6
 jinja2==3.1.3
