@@ -44,12 +44,8 @@ class TerminalCommandRunner:
         return completions
 
     def render(self, completions):
-        for completion in sorted(completions, key=lambda x: x["executionOrder"]):
+        for completion in sorted(completions, key=lambda x: x["order"]):
             self.console.print()
-            
-            if completion["responseType"] == "error":
-                print_completion(completion, len(completions))
-                sys.exit(0)
             
             print_completion(completion, len(completions))
             action = prompt_command_action()
@@ -57,7 +53,7 @@ class TerminalCommandRunner:
             if action == "Run":
                 self.run_command(
                     completion["shellScript"],
-                    is_last=completion["executionOrder"] == len(completions),
+                    is_last=completion["order"] == len(completions),
                 )
 
             if action == "Skip":

@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
 
-from .get_reducted_path import get_reducted_path
-
 def get_project_root_folder_name():
     """
     Traverse up from the current directory until the 'tildaconfig.toml' file is found,
@@ -40,7 +38,7 @@ def get_project_root_path() -> Path:
     while True:
         # Check if 'tildaconfig.toml' exists in the current directory
         if 'tildaconfig.toml' in os.listdir(current_dir):
-            return current_dir
+            return Path(current_dir)
         # Move up one directory level
         parent_dir = os.path.dirname(current_dir)
         

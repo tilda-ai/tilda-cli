@@ -20,6 +20,7 @@ from src.lib.utils.get_project_tree import get_project_tree
 from src.lib.utils.get_reducted_path import get_reducted_path
 from src.lib.utils.get_shell_history import read_cmd_history
 from src.lib.utils.write_log_file import write_log_file
+from src.lib.utils.get_user_shell import get_user_shell
 
 from ..types import TerminalCommandArgs
 from .tools.get_project_file_contents_tool import get_project_file_contents_tool
@@ -40,6 +41,7 @@ class TerminalAgent:
         rendered_prompt = self.template.render(
             prompt=args.prompt,
             user_os=os.name,
+            shell_type=get_user_shell(),
             dev_env_context=self.config.get_dev_env_context(),
             project_tree=get_project_tree(),
             project_config_files=get_project_config_files(),
@@ -95,5 +97,10 @@ class TerminalAgent:
             self.console.print(panel)
             self.console.print()
             sys.exit(1)
+
+        # save the inference response to a file for debugging purposes
+        # default destination: {project_root}/.tilda/logs/ directory
+        # TODO: disable if not in dev mode
+        write_log_file("command-terminal-response.json", inference["message"])
 
         return json.loads(inference["message"]).get("completions")

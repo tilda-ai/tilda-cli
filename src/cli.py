@@ -43,9 +43,9 @@ def main():
     if args.subcommand:
         try:
             commands[args.subcommand]["function"](args)
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            sys.exit(1)
+        # except Exception as e:
+        #     print(f"Error: {str(e)}")
+        #     sys.exit(1)
         except KeyboardInterrupt:
             print(
                 "\033[1;32m\nProcess terminated.\033[0m"

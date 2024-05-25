@@ -21,19 +21,30 @@ def read_last_commands(history_file, num_commands=30):
     if not history_file:
         logger.info("Unsupported shell for history retrieval.")
         return "Unsupported shell for history retrieval."
+    
     try:
         with open(history_file, 'r', encoding='utf-8', errors='ignore') as file:
-            # Efficiently read only the last 'num_commands' lines
-            history = file.readlines()[-num_commands:]
-            #clean history lines from prefix pattern ': XXXXXXXXXX:0;'
-            history = [line.split(';', 1)[1] for line in history]
+            # Read all lines from the file
+            all_lines = file.readlines()
+            
+            # Ensure num_commands is not greater than the number of lines in the file
+            if num_commands > len(all_lines):
+                logger.info(f"Requested number of commands ({num_commands}) is greater than available lines in history file ({len(all_lines)}). Returning all available lines.")
+                num_commands = len(all_lines)
+            
+            # Extract the last 'num_commands' lines
+            history = all_lines[-num_commands:]
+            
+            # Clean history lines from prefix pattern ': XXXXXXXXXX:0;'
+            history = [line.split(';', 1)[1] for line in history if ';' in line]
+        
         return history
     except FileNotFoundError:
         logger.error(f"History file not found: {history_file}")
-        return "History file not found."
+        return None
     except Exception as e:
-        logger.error("An unexpected error occurred.")
-        return f"An error occurred: {str(e)}"
+        logger.error(f"An unexpected error occurred. {str(e)}")
+        return None
 
 def read_cmd_history():
     history_file = get_history_file_path()

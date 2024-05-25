@@ -1,10 +1,6 @@
 import os
 import subprocess
 
-from src.lib.logger import Logger
-
-logger = Logger().get_logger()
-
 def get_shell_from_env():
     """Get shell from the SHELL environment variable."""
     shell_path = os.environ.get('SHELL')
@@ -19,8 +15,7 @@ def detect_shell():
         # Adjust the command according to your system and needs
         result = subprocess.check_output('ps -p $$ -oargs=', shell=True, text=True)
         return result.strip().split()[0]  # Split and return the first part to avoid extra args
-    except Exception as e:
-        logger.error(f"Error detecting shell: {e}")
+    except Exception:
         return None
 
 def get_user_shell():
