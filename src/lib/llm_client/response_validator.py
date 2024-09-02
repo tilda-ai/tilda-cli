@@ -1,20 +1,21 @@
 import json
 from typing import Dict, Optional
-
-#TODO: add schema validation
-#TODO: add self rejection and reflection
+import jsonschema
+from jsonschema import validate
 
 class ResponseValidator:
     @staticmethod
-    def validate_json_response(message: dict, response_type: str) -> Dict[str, str]:
+    def validate_json_response(message: dict, response_type: str, schema) -> Dict[str, str]:
         try:
-            json.loads(message.content)
+            response_content = json.loads(message.content)
+            # Validate against schema
+            validate(instance=response_content, schema=schema)
             return {
                 "status": "success",
                 "type": response_type,
                 "message": message.content,
             }
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
             # handle duplicated response
             deduped_response_object = ResponseValidator._dedupe_json_objects(
                 message.content
@@ -22,24 +23,36 @@ class ResponseValidator:
 
             if deduped_response_object:
                 try:
-                    json.loads(deduped_response_object)
+                    response_content = json.loads(deduped_response_object)
+                    # Validate against schema
+                    validate(instance=response_content, schema=schema)
                     return {
                         "status": "success",
                         "type": response_type,
                         "message": deduped_response_object,
                     }
-                except json.JSONDecodeError:
-                    #TODO: return the error to the llm_client for re-processing (1 retry only)
+                except json.JSONDecodeError as inner_e:
                     return {
                         "status": "error",
                         "type": f"Invalid{response_type}",
-                        "message": f"Invalid JSON received: \n\n{message.content.strip()}",
+                        "message": f"Invalid JSON received: \n\n{message.content.strip()}\nError: {inner_e}",
                     }
-
+                except jsonschema.ValidationError as ve:
+                    return {
+                        "status": "error",
+                        "type": f"Invalid{response_type}",
+                        "message": f"JSON Schema validation error: {ve.message}\nInvalid JSON received: \n\n{deduped_response_object.strip()}"
+                    }
             return {
                 "status": "error",
                 "type": f"Invalid{response_type}",
-                "message": f"Invalid JSON received: \n\n{message.content.strip()}",
+                "message": f"Invalid JSON received: \n\n{message.content.strip()}\nError: {e}",
+            }
+        except jsonschema.ValidationError as ve:
+            return {
+                "status": "error",
+                "type": f"Invalid{response_type}",
+                "message": f"JSON Schema validation error: {ve.message}\nInvalid JSON received: \n\n{message.content.strip()}"
             }
 
     @staticmethod

@@ -1,15 +1,16 @@
 import os
-from pathlib import Path
 import toml
 import keyring
+
+from .get_project_root import get_project_root_path
 
 class KeyHandler:
 
     @staticmethod
     def load_config():
         try:
-            current_directory_path = Path.cwd()
-            config_path = os.path.join(current_directory_path, "tildaconfig.toml")
+            project_root_path = get_project_root_path()
+            config_path = os.path.join(project_root_path, "tildaconfig.toml")
             return toml.load(config_path)
         except Exception as e:
             raise FileNotFoundError(f"Unable to load the config file: {config_path}") from e

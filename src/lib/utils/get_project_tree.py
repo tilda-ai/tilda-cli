@@ -24,7 +24,10 @@ def tree(dir_path: Path, prefix: str=''):
     for pointer, path in zip(pointers, contents):
         if not is_file_in_git(path) or path.name == '.git':
             continue
-        yield prefix + pointer + path.name
+
+        location = ' **- you are running in this folder**' if path.name == Path.cwd().name else ''
+        
+        yield prefix + pointer + path.name + location
 
         if path.is_dir(): # extend the prefix and recurse:
             extension = branch if pointer == tee else space 

@@ -5,7 +5,6 @@ from pathlib import Path
 import sys
 
 from rich.console import Console
-from rich.panel import Panel
 
 from src.config import Config
 from src.lib.llm_client.client import LLMClient
@@ -26,6 +25,7 @@ from ..types import TerminalCommandArgs
 from .tools.get_project_file_contents_tool import get_project_file_contents_tool
 from .tools.terminal_command_tools_mapping import terminal_command_tools_mapping
 from .templates.examples import examples
+from .schema import schema
 
 
 class TerminalAgent:
@@ -82,20 +82,11 @@ class TerminalAgent:
                 },
             ],
             tools=[get_project_file_contents_tool],
+            schema=schema
         )
-
+        
         if inference["status"] == "error":
-            self.console.print()
-            panel = Panel(
-                f"{inference["message"]}",
-                title="[bold red]Inference Error[/bold red]",
-                padding=(1, 2),
-                expand=True,
-                title_align="left",
-                border_style="grey50",
-            )
-            self.console.print(panel)
-            self.console.print()
+            self.console.print("[bold red]Inference failed, please try again.[/bold red]")
             sys.exit(1)
 
         # save the inference response to a file for debugging purposes

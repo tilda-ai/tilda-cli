@@ -17,7 +17,7 @@ def get_history_file_path():
     user_shell = get_user_shell()
     return history_files_map.get(user_shell)
 
-def read_last_commands(history_file, num_commands=30):
+def read_last_commands(history_file, num_commands=15):
     if not history_file:
         logger.info("Unsupported shell for history retrieval.")
         return "Unsupported shell for history retrieval."

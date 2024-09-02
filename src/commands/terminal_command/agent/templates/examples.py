@@ -27,32 +27,4 @@ examples = [
   ]
 }""",
     },
-    {
-        "role": "system",
-        "name": "example_user",
-        "content": "replace foo with bar in all .py files in src",
-    },
-    {
-        "role": "system",
-        "name": "example_agent",
-        "content": """{
-  "completions": [
-    {
-      "description": "Finds all .py files in the src directory and replaces 'foo' with 'bar'",
-      "content": "find src -name '*.py' -exec sed -i '' 's/foo/bar/g' {} +",
-      "chainable": true,
-      "chain_delimiter": "&&",
-      "sudo": false,
-      "dangerous": false,
-      "interactive": false,
-      "order": 1,
-      "confidence": 100,
-      "sources": [
-        "https://linux.die.net/man/1/find",
-        "https://linux.die.net/man/1/sed"
-      ]
-    }
-  ]
-}""",
-    },
 ]

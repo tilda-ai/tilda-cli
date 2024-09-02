@@ -10,4 +10,4 @@ pathspec==0.12.1
 rich==13.7.1
 build==1.2.1
 prompt-toolkit==3.0.43
-requests==2.31.0
+jsonschema==4.22.0

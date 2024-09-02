@@ -52,7 +52,7 @@ class TerminalCommandRunner:
 
             if action == "Run":
                 self.run_command(
-                    completion["shellScript"],
+                    completion["content"],
                     is_last=completion["order"] == len(completions),
                 )
 

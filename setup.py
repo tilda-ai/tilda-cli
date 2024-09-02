@@ -24,7 +24,7 @@ setup(
         'rich==13.7.1',
         'build==1.2.1',
         'prompt-toolkit==3.0.43',
-        'requests==2.31.0',
+        'jsonschema==4.22.0',
     ],
     entry_points={
         'console_scripts': [
